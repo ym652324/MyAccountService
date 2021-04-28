@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1:3306/test?useunicode=true&characterEncoding=utf8
+      username: root
+      password: 314159mySQL
+
+mybatis:
+  type-aliases-package: com.yang.ifsp.as.account.openAccount.model
