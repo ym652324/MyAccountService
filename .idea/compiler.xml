@@ -6,13 +6,29 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="channel" />
-        <module name="openAccount-batch" />
-        <module name="accountService" />
-        <module name="openAccount-api" />
         <module name="openAccount-service" />
-        <module name="ocr" />
+        <module name="openAccount-api" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="account" target="1.8" />
+      <module name="accountService" target="1.8" />
+      <module name="channel" target="1.8" />
+      <module name="ocr" target="1.8" />
+      <module name="openAccount-batch" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="MyAccountService" options="-parameters" />
+      <module name="account" options="-parameters" />
+      <module name="accountService" options="-parameters" />
+      <module name="channel" options="-parameters" />
+      <module name="ocr" options="-parameters" />
+      <module name="openAccount" options="-parameters" />
+      <module name="openAccount-api" options="-parameters" />
+      <module name="openAccount-batch" options="-parameters" />
+      <module name="openAccount-service" options="-parameters" />
+    </option>
   </component>
 </project>
