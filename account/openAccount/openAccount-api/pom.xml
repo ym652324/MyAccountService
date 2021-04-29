@@ -16,6 +16,14 @@
             <artifactId>spring-web</artifactId>
             <version>5.2.1.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>com.yang.ifsp</groupId>
+            <artifactId>common-tools</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+
     </dependencies>
 
 

@@ -14,6 +14,7 @@
     <file url="file://$PROJECT_DIR$/account/openAccount/openAccount-service" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/account/openAccount/openAccount-service" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/channel" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/common-tools" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ocr" charset="UTF-8" />
   </component>
 </project>

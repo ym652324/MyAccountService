@@ -6,8 +6,9 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="openAccount-service" />
         <module name="openAccount-api" />
+        <module name="openAccount-service" />
+        <module name="common-tools" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -24,6 +25,7 @@
       <module name="account" options="-parameters" />
       <module name="accountService" options="-parameters" />
       <module name="channel" options="-parameters" />
+      <module name="common-tools" options="-parameters" />
       <module name="ocr" options="-parameters" />
       <module name="openAccount" options="-parameters" />
       <module name="openAccount-api" options="-parameters" />
