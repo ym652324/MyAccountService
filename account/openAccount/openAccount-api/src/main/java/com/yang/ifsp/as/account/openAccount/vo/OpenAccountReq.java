@@ -32,9 +32,7 @@ public class OpenAccountReq extends AbstractMSOReq {
     @ApiModelProperty(value = "证件号码",required = true)
     private String idNo;
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
+
 
     public String getCustName() {
         return custName;

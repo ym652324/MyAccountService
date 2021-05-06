@@ -25,7 +25,7 @@ public class OpenAccountServiceImpl implements OpenAccountService {
 
         Boolean reqFlag = verifyJsonReqProcessor.verifyJsonReqMsg(openAccountReq,openAccountRes,openAcctResVo);
         if(!reqFlag){
-
+            return openAccountRes;
         }
 
         return  openAccountRes;

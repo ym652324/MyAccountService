@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 
+
 @Component
 public class VerifyJsonReqProcessor {
 
@@ -20,6 +21,25 @@ public class VerifyJsonReqProcessor {
 
     public boolean verifyJsonReqMsg(OpenAccountReq openAccountReq, OpenAccountRes openAccountRes,OpenAcctResVo openAcctResVo){
         logger.info("***********************校验请求报文***********************");
+        Map errorMap = verifyRequest(openAccountReq,openAcctResVo);
+
+        if(errorMap != null){
+            //公共部分
+            openAccountRes.setReqUID(openAccountReq.getReqUID());
+
+
+            openAccountRes.setCustName(openAccountReq.getCustName());
+            openAccountRes.setIdNo(openAccountReq.getIdNo());
+            openAccountRes.setRespCode(openAcctResVo.getRespCode());
+            openAccountRes.setRespMsg(openAcctResVo.getRespMsg());
+
+            return false;
+        }
+        logger.info("***********************请求报文通过***********************");
+        return true;
+    }
+
+    private Map verifyRequest(OpenAccountReq openAccountReq, OpenAcctResVo openAcctResVo) {
         Map<String,StringBuilder> errorMap = ValidatorUtil.validate(openAccountReq);
         if(errorMap != null){
             logger.error("***************校验请求报文非法*****************");
@@ -31,11 +51,7 @@ public class VerifyJsonReqProcessor {
             openAcctResVo.setRespCode(AccountEnums.VALIDATE_ERROR.getRespCode());
             openAcctResVo.setRespMsg(AccountEnums.VALIDATE_ERROR.getRespMsg());
         }
-        if(errorMap != null){
-            return false;
-        }
-        logger.info("***********************请求报文通过***********************");
-        return true;
+        return errorMap;
     }
 
 }
