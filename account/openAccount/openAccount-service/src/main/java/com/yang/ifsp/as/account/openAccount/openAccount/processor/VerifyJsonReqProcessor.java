@@ -1,7 +1,7 @@
 package com.yang.ifsp.as.account.openAccount.openAccount.processor;
 
 import com.yang.ifsp.as.account.openAccount.openAccount.bo.vo.OpenAcctResVo;
-import com.yang.ifsp.as.account.openAccount.openAccount.util.MakeMessage;
+import com.yang.ifsp.as.account.openAccount.openAccount.constants.AccountEnums;
 import com.yang.ifsp.as.account.openAccount.vo.OpenAccountReq;
 import com.yang.ifsp.as.account.openAccount.vo.OpenAccountRes;
 import com.yang.ifsp.common.util.ValidatorUtil;
@@ -20,17 +20,22 @@ public class VerifyJsonReqProcessor {
 
     public boolean verifyJsonReqMsg(OpenAccountReq openAccountReq, OpenAccountRes openAccountRes,OpenAcctResVo openAcctResVo){
         logger.info("***********************校验请求报文***********************");
-        Map errorMap = verifyRequest(openAccountReq,openAcctResVo);
-        OpenAccountReq req = openAccountReq;
-        OpenAccountRes res = openAccountRes;
-        OpenAcctResVo resVo = openAcctResVo;
- //       MakeMessage.makeResHeadFromReq(req,res,resVo);
-
+        Map<String,StringBuilder> errorMap = ValidatorUtil.validate(openAccountReq);
+        if(errorMap != null){
+            logger.error("***************校验请求报文非法*****************");
+            StringBuffer stringBuffer= new StringBuffer();
+            errorMap.forEach((s,stringBuilder) -> {
+                stringBuilder.append(s+":"+errorMap.get(s)+",");
+            });
+            stringBuffer.deleteCharAt(stringBuffer.length()-1);
+            openAcctResVo.setRespCode(AccountEnums.VALIDATE_ERROR.getRespCode());
+            openAcctResVo.setRespMsg(AccountEnums.VALIDATE_ERROR.getRespMsg());
+        }
+        if(errorMap != null){
+            return false;
+        }
+        logger.info("***********************请求报文通过***********************");
         return true;
     }
 
-    private Map verifyRequest(OpenAccountReq openAccountReq, OpenAcctResVo openAcctResVo) {
-        Map<String,StringBuilder> errorMap = ValidatorUtil.validate(openAccountReq);
-        return errorMap;
-    }
 }
