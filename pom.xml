@@ -10,7 +10,6 @@
     <name>as</name>
     <modules>
         <module>account</module>
-        <module>account</module>
         <module>common-tools</module>
     </modules>
 
@@ -74,6 +73,19 @@
             <artifactId>hibernate-validator</artifactId>
             <version>6.0.18.Final</version>
         </dependency>
+
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>2.9.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.3.2</version>
+        </dependency>
+
     </dependencies>
 
     <build>

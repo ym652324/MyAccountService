@@ -28,6 +28,14 @@ public class OpenAccountServiceImpl implements OpenAccountService {
             return openAccountRes;
         }
 
+        String reqUid = openAccountReq.getReqUID();
+        boolean reqUidFlag = verifyJsonReqProcessor.verifyReqUid(openAccountReq,reqUid,openAcctResVo,openAccountRes);
+        if(!reqUidFlag){
+            return openAccountRes;
+        }
+
+
+
         return  openAccountRes;
 
     }

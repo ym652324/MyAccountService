@@ -4,11 +4,14 @@ import com.yang.ifsp.as.account.openAccount.openAccount.bo.vo.OpenAcctResVo;
 import com.yang.ifsp.as.account.openAccount.openAccount.constants.AccountEnums;
 import com.yang.ifsp.as.account.openAccount.vo.OpenAccountReq;
 import com.yang.ifsp.as.account.openAccount.vo.OpenAccountRes;
+import com.yang.ifsp.common.redis.CacheReqUidUtil;
 import com.yang.ifsp.common.util.ValidatorUtil;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.Map;
 
 
@@ -18,6 +21,9 @@ public class VerifyJsonReqProcessor {
 
     private static Logger logger = LoggerFactory.getLogger(VerifyJsonReqProcessor.class);
 
+
+    @Autowired
+    private CacheReqUidUtil cacheReqUidUtil;
 
     public boolean verifyJsonReqMsg(OpenAccountReq openAccountReq, OpenAccountRes openAccountRes,OpenAcctResVo openAcctResVo){
         logger.info("***********************校验请求报文***********************");
@@ -54,4 +60,14 @@ public class VerifyJsonReqProcessor {
         return errorMap;
     }
 
+    public boolean verifyReqUid(OpenAccountReq openAccountReq, String reqUid, OpenAcctResVo openAcctResVo, OpenAccountRes openAccountRes) {
+        logger.info("*******************开始校验请求流水号********************");
+        Date date = cacheReqUidUtil.compareReqUidWithResult(reqUid);
+
+
+
+
+        logger.info("*******************校验请求流水号[{}]通过********************"+reqUid);
+        return true;
+    }
 }
