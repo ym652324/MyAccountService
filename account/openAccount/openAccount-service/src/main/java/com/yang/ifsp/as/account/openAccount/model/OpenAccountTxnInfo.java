@@ -1,4 +1,4 @@
-package com.yang.ifsp.as.account.openAccount.openAccount.model;
+package com.yang.ifsp.as.account.openAccount.model;
 
 import java.util.Date;
 
@@ -10,6 +10,9 @@ public class OpenAccountTxnInfo {
     private String eAccount;
     private Date createTime;
     private String idNo;
+    private String imageStatus;
+    private String respCode;
+    private String respMsg;
 
     public String getReqUid() {
         return reqUid;
@@ -65,5 +68,29 @@ public class OpenAccountTxnInfo {
 
     public void setIdNo(String idNo) {
         this.idNo = idNo;
+    }
+
+    public String getImageStatus() {
+        return imageStatus;
+    }
+
+    public void setImageStatus(String imageStatus) {
+        this.imageStatus = imageStatus;
+    }
+
+    public String getRespCode() {
+        return respCode;
+    }
+
+    public void setRespCode(String respCode) {
+        this.respCode = respCode;
+    }
+
+    public String getRespMsg() {
+        return respMsg;
+    }
+
+    public void setRespMsg(String respMsg) {
+        this.respMsg = respMsg;
     }
 }

@@ -1,42 +1,23 @@
-package com.yang.ifsp.as.account.openAccount.vo;
+package com.yang.ifsp.as.account.openAccount.bo.vo;
 
 import com.yang.ifsp.common.protocol.AbstractMSOReq;
-import io.swagger.annotations.ApiModelProperty;
-import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
+
+public class OpenAcctReqVo extends AbstractMSOReq implements Serializable {
 
 
-public class OpenAccountReq extends AbstractMSOReq {
+    private static final long serialVersionUID = -1668717461713223619L;
 
-    private static final long serialVersionUID = 6846954613098125484L;
-
-    @NotBlank
-    @Length(max=40)
-    @ApiModelProperty(value = "姓名",required = true)
     private String custName;
 
-    @NotBlank
-    @Length(max=20)
-    @ApiModelProperty(value = "手机号",required = true)
     private String mobilePhone;
 
-    @NotBlank
-    @Length(max=40)
-    @ApiModelProperty(value = "绑定卡",required = true)
     private String bindCard;
 
-
-    @NotBlank
-    @Length(max=20)
-    @ApiModelProperty(value = "证件号码",required = true)
     private String idNo;
 
-
-    @ApiModelProperty(value = "是否上传影像件")
-    @Length(max=2)
     private String imageStatus;
-
 
     public String getCustName() {
         return custName;

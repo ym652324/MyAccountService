@@ -1,4 +1,4 @@
-package com.yang.ifsp.as.account.openAccount.openAccount.bo.vo;
+package com.yang.ifsp.as.account.openAccount.bo.vo;
 
 import com.yang.ifsp.common.protocol.AbstractMSORes;
 

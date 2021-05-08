@@ -1,9 +1,11 @@
-package com.yang.ifsp.as.account.openAccount.openAccount.constants;
+package com.yang.ifsp.as.account.openAccount.constants;
 
 public enum  AccountEnums {
 
     //报文头响应码
-    VALIDATE_ERROR("10001","报文字段不符合规范");
+    VALIDATE_ERROR("10001","报文字段不符合规范"),
+
+    REQUID_CHECK_ERROR("1002","请求流水号校验失败");
 
 
 

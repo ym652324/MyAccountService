@@ -1,8 +1,11 @@
-package com.yang.ifsp.as.account.openAccount.openAccount.impl;
+package com.yang.ifsp.as.account.openAccount.impl;
 
 import com.yang.ifsp.as.account.openAccount.api.OpenAccountService;
-import com.yang.ifsp.as.account.openAccount.openAccount.bo.vo.OpenAcctResVo;
-import com.yang.ifsp.as.account.openAccount.openAccount.processor.VerifyJsonReqProcessor;
+import com.yang.ifsp.as.account.openAccount.bo.OpenAcctBo;
+import com.yang.ifsp.as.account.openAccount.bo.impl.OpenAcctBoImpl;
+import com.yang.ifsp.as.account.openAccount.bo.vo.OpenAcctReqVo;
+import com.yang.ifsp.as.account.openAccount.bo.vo.OpenAcctResVo;
+import com.yang.ifsp.as.account.openAccount.processor.VerifyJsonReqProcessor;
 import com.yang.ifsp.as.account.openAccount.vo.OpenAccountReq;
 import com.yang.ifsp.as.account.openAccount.vo.OpenAccountRes;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,9 @@ public class OpenAccountServiceImpl implements OpenAccountService {
 
     @Autowired
     VerifyJsonReqProcessor verifyJsonReqProcessor;
+
+    @Autowired
+    OpenAcctBoImpl openAcctBoImpl;
 
     @Override
     public @ResponseBody
@@ -33,6 +39,22 @@ public class OpenAccountServiceImpl implements OpenAccountService {
         if(!reqUidFlag){
             return openAccountRes;
         }
+
+
+        OpenAcctReqVo openAccountReqVo = new OpenAcctReqVo();
+        openAccountReqVo.setReqUID(openAccountReq.getReqUID());
+        openAccountReqVo.setTranCode(openAccountReq.getTranCode());
+        openAccountReqVo.setCustName(openAccountReq.getCustName());
+        openAccountReqVo.setBindCard(openAccountReq.getBindCard());
+        openAccountReqVo.setIdNo(openAccountReq.getIdNo());
+        openAccountReqVo.setMobilePhone(openAccountReq.getMobilePhone());
+        openAccountReqVo.setImageStatus(openAccountReq.getImageStatus());
+
+
+        openAcctResVo = openAcctBoImpl.process(openAccountReqVo);
+
+
+
 
 
 
