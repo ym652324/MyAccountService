@@ -1,6 +1,5 @@
 package com.yang.ifsp.as.account.openAccount.processor;
 
-import com.yang.ifsp.as.account.openAccount.bo.vo.OpenAcctResVo;
 import com.yang.ifsp.as.account.openAccount.constants.AccountEnums;
 import com.yang.ifsp.as.account.openAccount.util.MakeMessage;
 import com.yang.ifsp.as.account.openAccount.vo.OpenAccountReq;
@@ -13,7 +12,6 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
 import java.util.Map;
 
 
@@ -30,19 +28,19 @@ public class VerifyJsonReqProcessor {
 
 
 
-    public boolean verifyJsonReqMsg(OpenAccountReq openAccountReq, OpenAccountRes openAccountRes, OpenAcctResVo openAcctResVo){
+    public boolean verifyJsonReqMsg(OpenAccountReq openAccountReq, OpenAccountRes openAccountRes){
         logger.info("***********************校验请求报文***********************");
-        Map errorMap = verifyRequest(openAccountReq,openAcctResVo);
+        Map errorMap = verifyRequest(openAccountReq,openAccountRes);
 
         if(errorMap != null){
-            MakeMessage.makeOpenAcctRes(openAccountReq,openAccountRes,openAcctResVo);
+            MakeMessage.makeOpenAcctCommonRes(openAccountReq,openAccountRes);
             return false;
         }
         logger.info("***********************请求报文通过***********************");
         return true;
     }
 
-    private Map verifyRequest(OpenAccountReq openAccountReq, OpenAcctResVo openAcctResVo) {
+    private Map verifyRequest(OpenAccountReq openAccountReq, OpenAccountRes openAccountRes) {
         Map<String,StringBuilder> errorMap = ValidatorUtil.validate(openAccountReq);
         if(errorMap != null){
             logger.error("***************校验请求报文非法*****************");
@@ -51,21 +49,21 @@ public class VerifyJsonReqProcessor {
                 stringBuilder.append(s+":"+errorMap.get(s)+",");
             });
             stringBuffer.deleteCharAt(stringBuffer.length()-1);
-            openAcctResVo.setRespCode(AccountEnums.VALIDATE_ERROR.getRespCode());
-            openAcctResVo.setRespMsg(AccountEnums.VALIDATE_ERROR.getRespMsg());
+            openAccountRes.setRespCode(AccountEnums.VALIDATE_ERROR.getRespCode());
+            openAccountRes.setRespMsg(AccountEnums.VALIDATE_ERROR.getRespMsg());
         }
         return errorMap;
     }
 
-    public boolean verifyReqUid(OpenAccountReq openAccountReq, String reqUid, OpenAcctResVo openAcctResVo, OpenAccountRes openAccountRes) {
+    public boolean verifyReqUid(OpenAccountReq openAccountReq, String reqUid,OpenAccountRes openAccountRes) {
         logger.info("*******************开始校验请求流水号********************");
         boolean repeatFlag = reqUidUtil.checkIsRepeat(reqUid);
         if(!repeatFlag){
             logger.error("请求流水号校验失败");
-            openAcctResVo.setRespCode(AccountEnums.REQUID_CHECK_ERROR.getRespCode());
-            openAcctResVo.setRespMsg(AccountEnums.REQUID_CHECK_ERROR.getRespMsg());
+            openAccountRes.setRespCode(AccountEnums.REQUID_CHECK_ERROR.getRespCode());
+            openAccountRes.setRespMsg(AccountEnums.REQUID_CHECK_ERROR.getRespMsg());
 
-            MakeMessage.makeOpenAcctRes(openAccountReq,openAccountRes,openAcctResVo);
+            MakeMessage.makeOpenAcctCommonRes(openAccountReq,openAccountRes);
 
         }
         logger.info("*******************校验请求流水号[{}]通过********************"+reqUid);

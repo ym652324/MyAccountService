@@ -1,7 +1,7 @@
 package com.yang.ifsp.as.account.openAccount.util;
 
-import com.yang.ifsp.as.account.openAccount.bo.vo.OpenAcctReqVo;
 import com.yang.ifsp.as.account.openAccount.db.model.OpenAcctTxnInfoDO;
+import com.yang.ifsp.as.account.openAccount.vo.OpenAccountReq;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -10,13 +10,13 @@ import java.util.Date;
 @Component
 public class CreateModelUtil {
 
-    public static OpenAcctTxnInfoDO createModel(OpenAcctReqVo reqVo, OpenAcctTxnInfoDO openAcctTxnInfoDO) {
-        openAcctTxnInfoDO.setBindcard(reqVo.getBindCard());
+    public static OpenAcctTxnInfoDO createModel(OpenAccountReq req, OpenAcctTxnInfoDO openAcctTxnInfoDO) {
+        openAcctTxnInfoDO.setBindcard(req.getBindCard());
         openAcctTxnInfoDO.setCreatetime(new Date());
-        openAcctTxnInfoDO.setCustname(reqVo.getCustName());
-        openAcctTxnInfoDO.setIdno(reqVo.getIdNo());
-        openAcctTxnInfoDO.setMobilephone(reqVo.getMobilePhone());
-        openAcctTxnInfoDO.setImagestatus(reqVo.getImageStatus());
+        openAcctTxnInfoDO.setCustname(req.getCustName());
+        openAcctTxnInfoDO.setIdno(req.getIdNo());
+        openAcctTxnInfoDO.setMobilephone(req.getMobilePhone());
+        openAcctTxnInfoDO.setImagestatus(req.getImageStatus());
         return openAcctTxnInfoDO;
     }
 }
