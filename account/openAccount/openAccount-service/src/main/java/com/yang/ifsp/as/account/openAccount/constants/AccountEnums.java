@@ -5,7 +5,9 @@ public enum  AccountEnums {
     //报文头响应码
     VALIDATE_ERROR("10001","报文字段不符合规范"),
 
-    REQUID_CHECK_ERROR("1002","请求流水号校验失败");
+    REQUID_CHECK_ERROR("1002","请求流水号校验失败"),
+
+    SYSTEM_INNRT_ERROR("1003","系统内部错误失败");
 
 
 

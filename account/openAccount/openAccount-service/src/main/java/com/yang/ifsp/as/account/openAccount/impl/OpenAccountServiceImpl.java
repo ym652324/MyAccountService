@@ -31,6 +31,9 @@ public class OpenAccountServiceImpl implements OpenAccountService {
         OpenAccountRes openAccountRes = new OpenAccountRes();
         OpenAcctResVo openAcctResVo = new OpenAcctResVo();
 
+        OpenAcctReqVo openAcctReqVo = new OpenAcctReqVo();
+        ReqToVoUtil.openAcctReqToVo(openAccountReq,openAcctReqVo);
+
         boolean reqFlag = verifyJsonReqProcessor.verifyJsonReqMsg(openAccountReq,openAccountRes,openAcctResVo);
         if(!reqFlag){
             return openAccountRes;
@@ -43,8 +46,7 @@ public class OpenAccountServiceImpl implements OpenAccountService {
         }
 
 
-        OpenAcctReqVo openAcctReqVo = new OpenAcctReqVo();
-        ReqToVoUtil.openAcctReqToVo(openAccountReq,openAcctReqVo);
+
 
         openAcctResVo = openAcctBoImpl.process(openAcctReqVo);
         VoToResUtil.openAcctVoToRes(openAccountReq,openAcctResVo,openAccountRes);
