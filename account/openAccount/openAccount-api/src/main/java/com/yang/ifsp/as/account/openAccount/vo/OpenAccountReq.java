@@ -37,6 +37,17 @@ public class OpenAccountReq extends AbstractMSOReq {
     @Length(max=2)
     private String imageStatus;
 
+    @NotBlank
+    @Length(max=20)
+    @ApiModelProperty(value = "登陆密码",required = true)
+    private String logPassword;
+
+    @NotBlank
+    @Length(max=20)
+    @ApiModelProperty(value = "支付密码",required = true)
+    private String payPassword;
+
+
 
     public String getCustName() {
         return custName;
