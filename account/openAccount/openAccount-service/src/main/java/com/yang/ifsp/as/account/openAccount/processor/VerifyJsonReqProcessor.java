@@ -2,6 +2,7 @@ package com.yang.ifsp.as.account.openAccount.processor;
 
 import com.yang.ifsp.as.account.openAccount.bo.vo.OpenAcctResVo;
 import com.yang.ifsp.as.account.openAccount.constants.AccountEnums;
+import com.yang.ifsp.as.account.openAccount.util.MakeMessage;
 import com.yang.ifsp.as.account.openAccount.vo.OpenAccountReq;
 import com.yang.ifsp.as.account.openAccount.vo.OpenAccountRes;
 //import com.yang.ifsp.common.redis.CacheReqUidUtil;
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.Map;
 
 
@@ -33,16 +35,7 @@ public class VerifyJsonReqProcessor {
         Map errorMap = verifyRequest(openAccountReq,openAcctResVo);
 
         if(errorMap != null){
-            //公共部分
-
-            openAccountRes.setReqUID(openAccountReq.getReqUID());
-
-
-            openAccountRes.setCustName(openAccountReq.getCustName());
-            openAccountRes.setIdNo(openAccountReq.getIdNo());
-            openAccountRes.setRespCode(openAcctResVo.getRespCode());
-            openAccountRes.setRespMsg(openAcctResVo.getRespMsg());
-
+            MakeMessage.makeOpenAcctRes(openAccountReq,openAccountRes,openAcctResVo);
             return false;
         }
         logger.info("***********************请求报文通过***********************");
@@ -72,11 +65,7 @@ public class VerifyJsonReqProcessor {
             openAcctResVo.setRespCode(AccountEnums.REQUID_CHECK_ERROR.getRespCode());
             openAcctResVo.setRespMsg(AccountEnums.REQUID_CHECK_ERROR.getRespMsg());
 
-            openAccountRes.setReqUID(openAccountReq.getReqUID());
-            openAccountRes.setCustName(openAccountReq.getCustName());
-            openAccountRes.setIdNo(openAccountReq.getIdNo());
-            openAccountRes.setRespCode(openAcctResVo.getRespCode());
-            openAccountRes.setRespMsg(openAcctResVo.getRespMsg());
+            MakeMessage.makeOpenAcctRes(openAccountReq,openAccountRes,openAcctResVo);
 
         }
         logger.info("*******************校验请求流水号[{}]通过********************"+reqUid);

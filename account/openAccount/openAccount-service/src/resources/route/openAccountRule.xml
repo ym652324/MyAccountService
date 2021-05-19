@@ -1,9 +1,0 @@
-<rule-setting>
-    <rules type="INDEX_ROUTER" expression="[hash.apply(#)]" shards="shard1">
-        <rule>
-            <namespace>com.yang.ifsp.as.account.openAccount.dao.OpenAccoutTxnInfoDao</namespace>
-            <field>shardKeys</field>
-        </rule>
-
-    </rules>
-</rule-setting>

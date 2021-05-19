@@ -1,6 +1,8 @@
 package com.yang.ifsp.common.protocol;
 
 import java.io.Serializable;
+import java.util.Date;
+
 import io.swagger.annotations.ApiModelProperty;
 
 public abstract class AbstractMSOReq implements Serializable {
@@ -18,6 +20,12 @@ public abstract class AbstractMSOReq implements Serializable {
     )
     private String tranCode;
 
+    @ApiModelProperty(
+            value = "请求时间",
+            required = true
+    )
+    private Date reqDatetime;
+
     public String getReqUID() {
         return reqUID;
     }
@@ -32,5 +40,13 @@ public abstract class AbstractMSOReq implements Serializable {
 
     public void setTranCode(String tranCode) {
         this.tranCode = tranCode;
+    }
+
+    public Date getReqDatetime() {
+        return reqDatetime;
+    }
+
+    public void setReqDatetime(Date reqDatetime) {
+        this.reqDatetime = reqDatetime;
     }
 }

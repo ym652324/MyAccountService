@@ -1,17 +1,23 @@
 package com.yang.ifsp.as.account.openAccount.processor;
 
 import com.yang.ifsp.as.account.openAccount.bo.vo.OpenAcctReqVo;
-import com.yang.ifsp.as.account.openAccount.model.OpenAccountTxnInfo;
-import com.yang.ifsp.common.protocol.AbstractMSORes;
+import com.yang.ifsp.as.account.openAccount.util.CreateModelUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
 @Component
 public class DbProcessor {
 
-    public OpenAccountTxnInfo insertModel(OpenAcctReqVo reqVo,OpenAccountTxnInfo dataModel){
+    @Autowired
+    OpenAcctTxnInfoDOMapper openAcctTxnInfoDOMapper;
 
 
-        return dataModel;
+
+    public OpenAcctTxnInfoDO insertModel(OpenAcctReqVo reqVo, OpenAcctTxnInfoDO openAcctTxnInfoDO){
+        openAcctTxnInfoDO = CreateModelUtil.createModel(reqVo, openAcctTxnInfoDO);
+        openAcctTxnInfoDOMapper.insert(openAcctTxnInfoDO);
+
+        return openAcctTxnInfoDO;
     }
 }

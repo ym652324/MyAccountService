@@ -6,6 +6,8 @@ import com.yang.ifsp.as.account.openAccount.bo.impl.OpenAcctBoImpl;
 import com.yang.ifsp.as.account.openAccount.bo.vo.OpenAcctReqVo;
 import com.yang.ifsp.as.account.openAccount.bo.vo.OpenAcctResVo;
 import com.yang.ifsp.as.account.openAccount.processor.VerifyJsonReqProcessor;
+import com.yang.ifsp.as.account.openAccount.util.ReqToVoUtil;
+import com.yang.ifsp.as.account.openAccount.util.VoToResUtil;
 import com.yang.ifsp.as.account.openAccount.vo.OpenAccountReq;
 import com.yang.ifsp.as.account.openAccount.vo.OpenAccountRes;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,7 @@ public class OpenAccountServiceImpl implements OpenAccountService {
         OpenAccountRes openAccountRes = new OpenAccountRes();
         OpenAcctResVo openAcctResVo = new OpenAcctResVo();
 
-        Boolean reqFlag = verifyJsonReqProcessor.verifyJsonReqMsg(openAccountReq,openAccountRes,openAcctResVo);
+        boolean reqFlag = verifyJsonReqProcessor.verifyJsonReqMsg(openAccountReq,openAccountRes,openAcctResVo);
         if(!reqFlag){
             return openAccountRes;
         }
@@ -41,22 +43,11 @@ public class OpenAccountServiceImpl implements OpenAccountService {
         }
 
 
-        OpenAcctReqVo openAccountReqVo = new OpenAcctReqVo();
-        openAccountReqVo.setReqUID(openAccountReq.getReqUID());
-        openAccountReqVo.setTranCode(openAccountReq.getTranCode());
-        openAccountReqVo.setCustName(openAccountReq.getCustName());
-        openAccountReqVo.setBindCard(openAccountReq.getBindCard());
-        openAccountReqVo.setIdNo(openAccountReq.getIdNo());
-        openAccountReqVo.setMobilePhone(openAccountReq.getMobilePhone());
-        openAccountReqVo.setImageStatus(openAccountReq.getImageStatus());
+        OpenAcctReqVo openAcctReqVo = new OpenAcctReqVo();
+        ReqToVoUtil.openAcctReqToVo(openAccountReq,openAcctReqVo);
 
-
-        openAcctResVo = openAcctBoImpl.process(openAccountReqVo);
-
-
-
-
-
+        openAcctResVo = openAcctBoImpl.process(openAcctReqVo);
+        VoToResUtil.openAcctVoToRes(openAccountReq,openAcctResVo,openAccountRes);
 
         return  openAccountRes;
 

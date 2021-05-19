@@ -3,6 +3,7 @@ package com.yang.ifsp.common.protocol;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class AbstractMSORes implements Serializable {
 
@@ -31,6 +32,13 @@ public class AbstractMSORes implements Serializable {
             value = "响应信息"
     )
     private String respMsg;
+
+
+    @ApiModelProperty(
+            value = "响应时间",
+            required = true
+    )
+    private Date respDatetime;
 
 
 
@@ -64,5 +72,13 @@ public class AbstractMSORes implements Serializable {
 
     public void setRespMsg(String respMsg) {
         this.respMsg = respMsg;
+    }
+
+    public Date getRespDatetime() {
+        return respDatetime;
+    }
+
+    public void setRespDatetime(Date respDatetime) {
+        this.respDatetime = respDatetime;
     }
 }
