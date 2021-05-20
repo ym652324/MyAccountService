@@ -16,7 +16,7 @@ public class CreateModelUtil {
         openAcctTxnInfoDO.setCustname(req.getCustName());
         openAcctTxnInfoDO.setIdno(req.getIdNo());
         openAcctTxnInfoDO.setMobilephone(req.getMobilePhone());
-        openAcctTxnInfoDO.setImagestatus(req.getImageStatus());
+        openAcctTxnInfoDO.setImage(req.getImage());
         return openAcctTxnInfoDO;
     }
 }

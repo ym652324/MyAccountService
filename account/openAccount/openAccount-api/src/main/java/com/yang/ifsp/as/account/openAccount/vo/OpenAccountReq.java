@@ -18,12 +18,12 @@ public class OpenAccountReq extends AbstractMSOReq {
 
     @NotBlank
     @Length(max=20)
-    @ApiModelProperty(value = "手机号",required = true)
+    @ApiModelProperty(value = "手机号")
     private String mobilePhone;
 
     @NotBlank
     @Length(max=40)
-    @ApiModelProperty(value = "绑定卡",required = true)
+    @ApiModelProperty(value = "绑定卡")
     private String bindCard;
 
 
@@ -33,9 +33,9 @@ public class OpenAccountReq extends AbstractMSOReq {
     private String idNo;
 
 
-    @ApiModelProperty(value = "是否上传影像件")
+    @ApiModelProperty(value = "影像件")
     @Length(max=2)
-    private String imageStatus;
+    private String image;
 
     @NotBlank
     @Length(max=20)
@@ -44,10 +44,48 @@ public class OpenAccountReq extends AbstractMSOReq {
 
     @NotBlank
     @Length(max=20)
-    @ApiModelProperty(value = "支付密码",required = true)
+    @ApiModelProperty(value = "支付密码")
     private String payPassword;
 
 
+    @NotBlank
+    @Length(max=40)
+    @ApiModelProperty(value = "交易码",required = true)
+    private String tranCode;
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getLogPassword() {
+        return logPassword;
+    }
+
+    public void setLogPassword(String logPassword) {
+        this.logPassword = logPassword;
+    }
+
+    public String getPayPassword() {
+        return payPassword;
+    }
+
+    public void setPayPassword(String payPassword) {
+        this.payPassword = payPassword;
+    }
+
+    @Override
+    public String getTranCode() {
+        return tranCode;
+    }
+
+    @Override
+    public void setTranCode(String tranCode) {
+        this.tranCode = tranCode;
+    }
 
     public String getCustName() {
         return custName;
@@ -82,10 +120,10 @@ public class OpenAccountReq extends AbstractMSOReq {
     }
 
     public String getImageStatus() {
-        return imageStatus;
+        return image;
     }
 
     public void setImageStatus(String imageStatus) {
-        this.imageStatus = imageStatus;
+        this.image = image;
     }
 }
