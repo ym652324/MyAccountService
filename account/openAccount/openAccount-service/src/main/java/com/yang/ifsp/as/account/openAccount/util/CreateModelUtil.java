@@ -11,12 +11,17 @@ import java.util.Date;
 public class CreateModelUtil {
 
     public static OpenAcctTxnInfoDO createModel(OpenAccountReq req, OpenAcctTxnInfoDO openAcctTxnInfoDO) {
+        openAcctTxnInfoDO.setRequid(req.getReqUID());
         openAcctTxnInfoDO.setBindcard(req.getBindCard());
         openAcctTxnInfoDO.setCreatetime(new Date());
         openAcctTxnInfoDO.setCustname(req.getCustName());
         openAcctTxnInfoDO.setIdno(req.getIdNo());
         openAcctTxnInfoDO.setMobilephone(req.getMobilePhone());
         openAcctTxnInfoDO.setImage(req.getImage());
+        openAcctTxnInfoDO.setEaccount(req.geteAccount());
+        openAcctTxnInfoDO.setTrancode(req.getTranCode());
+        openAcctTxnInfoDO.setLastoperate("校验报文及流水号");
+        openAcctTxnInfoDO.setLastupdatetime(new Date());
         return openAcctTxnInfoDO;
     }
 }

@@ -12,7 +12,7 @@ public class OpenAccountReq extends AbstractMSOReq {
     private static final long serialVersionUID = 6846954613098125484L;
 
     @NotBlank
-    @Length(max=40)
+    @Length(max=64)
     @ApiModelProperty(value = "姓名",required = true)
     private String custName;
 
@@ -22,7 +22,7 @@ public class OpenAccountReq extends AbstractMSOReq {
     private String mobilePhone;
 
     @NotBlank
-    @Length(max=40)
+    @Length(max=30)
     @ApiModelProperty(value = "绑定卡")
     private String bindCard;
 
@@ -34,31 +34,36 @@ public class OpenAccountReq extends AbstractMSOReq {
 
 
     @ApiModelProperty(value = "影像件")
-    @Length(max=2)
-    private String image;
+    private byte[] image;
 
     @NotBlank
-    @Length(max=20)
+    @Length(max=255)
     @ApiModelProperty(value = "登陆密码",required = true)
     private String logPassword;
 
     @NotBlank
-    @Length(max=20)
+    @Length(max=255)
     @ApiModelProperty(value = "支付密码")
     private String payPassword;
 
 
     @NotBlank
-    @Length(max=40)
+    @Length(max=20)
     @ApiModelProperty(value = "交易码",required = true)
     private String tranCode;
 
-    public String getImage() {
-        return image;
+    @NotBlank
+    @Length(max=30)
+    @ApiModelProperty(value = "电子账户")
+    private String eAccount;
+
+
+    public String geteAccount() {
+        return eAccount;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void seteAccount(String eAccount) {
+        this.eAccount = eAccount;
     }
 
     public String getLogPassword() {
@@ -119,11 +124,11 @@ public class OpenAccountReq extends AbstractMSOReq {
         this.idNo = idNo;
     }
 
-    public String getImageStatus() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImageStatus(String imageStatus) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 }

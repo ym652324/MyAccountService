@@ -18,4 +18,12 @@ public class DbProcessor {
         openAcctTxnInfoDO = CreateModelUtil.createModel(req, openAcctTxnInfoDO);
         return openAcctTxnInfoDOMapper.insert(openAcctTxnInfoDO);
     }
+
+    public void updateModel(Object obj) {
+        if(obj instanceof OpenAcctTxnInfoDO){
+            OpenAcctTxnInfoDO openAcctTxnInfoDO = (OpenAcctTxnInfoDO)obj;
+            openAcctTxnInfoDOMapper.updateByPrimaryKey(openAcctTxnInfoDO);
+        }
+
+    }
 }

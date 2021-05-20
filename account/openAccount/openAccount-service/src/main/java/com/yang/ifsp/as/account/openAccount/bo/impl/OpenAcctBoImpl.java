@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 
 @Service
 public class OpenAcctBoImpl implements OpenAcctBo {
@@ -26,14 +28,37 @@ public class OpenAcctBoImpl implements OpenAcctBo {
         OpenAccountRes res = new OpenAccountRes();
         String reqUid = req.getReqUID();
         OpenAcctTxnInfoDO openAcctTxnInfoDO = new OpenAcctTxnInfoDO();
-        if(dbProcessor.insertModel(req,openAcctTxnInfoDO)==0){
-            logger.error("请求报文入库失败,流水号：[{}]"+reqUid);
-            res.setRespCode(AccountEnums.SYSTEM_INNRT_ERROR.getRespCode());
-            res.setRespMsg(AccountEnums.SYSTEM_INNRT_ERROR.getRespMsg());
-            MakeMessage.makeOpenAcctCommonRes(req,res);
-            return res;
+        dbProcessor.insertModel(req,openAcctTxnInfoDO);
+//        if(dbProcessor.insertModel(req,openAcctTxnInfoDO)==0){
+//            logger.error("请求报文入库失败,流水号：[{}]"+reqUid);
+//            res.setRespCode(AccountEnums.SYSTEM_INNRT_ERROR.getRespCode());
+//            res.setRespMsg(AccountEnums.SYSTEM_INNRT_ERROR.getRespMsg());
+//            MakeMessage.makeOpenAcctCommonRes(req,res);
+//            openAcctTxnInfoDO.setRespcode(res.getRespCode());
+//            openAcctTxnInfoDO.setRespmsg(res.getRespMsg());
+//            openAcctTxnInfoDO.setLastupdatetime(new Date());
+//            openAcctTxnInfoDO.setLastoperate("请求报文入库");
+//            dbProcessor.updateModel(openAcctTxnInfoDO);
+//            return res;
+//        }
+        String tranCode = req.getTranCode();
+        if("T0001".equals(tranCode)){
+            logger.info("进入开户接口流程");
+
+        }else if("T0002".equals(tranCode)){
+            logger.info("进入补录接口流程");
+
+        }else{
+            logger.error("无效的交易码");
+            res.setRespCode(AccountEnums.TRAN_CODE_ERROR.getRespCode());
+            res.setRespMsg(AccountEnums.TRAN_CODE_ERROR.getRespMsg());
+            openAcctTxnInfoDO.setLastoperate("请求报文入库");
+            openAcctTxnInfoDO.setLastupdatetime(new Date());
+            openAcctTxnInfoDO.setRespcode(res.getRespCode());
+            openAcctTxnInfoDO.setRespmsg(res.getRespMsg());
         }
 
+        dbProcessor.updateModel(openAcctTxnInfoDO);
         return res;
     }
 }
