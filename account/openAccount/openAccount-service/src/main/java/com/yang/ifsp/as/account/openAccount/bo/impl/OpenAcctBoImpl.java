@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 
@@ -43,18 +44,29 @@ public class OpenAcctBoImpl implements OpenAcctBo {
 //            dbProcessor.updateModel(openAcctTxnInfoDO);
 //            return res;
 //        }
-        String name = req.getCustName();
-        String idNo = req.getIdNo();
-        String mobile = req.getMobilePhone();
-        String bindCard = req.getBindCard();
+//        String name = req.getCustName();
+//        String idNo = req.getIdNo();
+//        String mobile = req.getMobilePhone();
+//        String bindCard = req.getBindCard();
         String eAccount = req.geteAccount();
-        HashSet<String> set = new HashSet<String>(Arrays.asList("name","idNo","mobile","bindCard"));
-        HashMap<String,String> checkMap = CheckUtil.check(set);
-        if("false".equals(checkMap.get(0))){
-            logger.error("请求报文[{]]字段校验失败"+checkMap.get(1));
+
+        //检查字段合法性
+        HashMap<String,String> checkMap = new HashMap<>();
+        checkMap.put("custName",req.getCustName());
+        checkMap.put("idNo",req.getIdNo());
+        checkMap.put("mobilePhone",req.getMobilePhone());
+        checkMap.put("bindCard",req.getBindCard());
+        HashMap<String,String> resultMap = CheckUtil.check(checkMap);
+        if("false".equals(resultMap.get(0))){
+            logger.error("请求报文[{]]字段校验失败"+resultMap.get(1));
             res.setRespCode(AccountEnums.FORMAT_ERROR.getRespCode());
             res.setRespMsg(AccountEnums.FORMAT_ERROR.getRespMsg());
+            openAcctTxnInfoDO.setLastoperate("请求报文字段合法性校验");
+            dbProcessor.updateModel(openAcctTxnInfoDO,res);
+            return res;
         }
+
+
         String tranCode = req.getTranCode();
         if("T0001".equals(tranCode)){
             logger.info("进入开户接口流程");
@@ -68,6 +80,11 @@ public class OpenAcctBoImpl implements OpenAcctBo {
                 logger.error("补录接口电子账号不能为空");
                 res.setRespCode(AccountEnums.VALIDATE_ERROR.getRespCode());
                 res.setRespMsg(AccountEnums.VALIDATE_ERROR.getRespMsg());
+                openAcctTxnInfoDO.setLastoperate("补录接口电子账号非空校验");
+//                openAcctTxnInfoDO.setRespcode(res.getRespCode());
+//                openAcctTxnInfoDO.setRespmsg(res.getRespMsg());
+                dbProcessor.updateModel(openAcctTxnInfoDO,res);
+                return res;
             }
 
 
@@ -77,12 +94,10 @@ public class OpenAcctBoImpl implements OpenAcctBo {
             res.setRespCode(AccountEnums.TRAN_CODE_ERROR.getRespCode());
             res.setRespMsg(AccountEnums.TRAN_CODE_ERROR.getRespMsg());
             openAcctTxnInfoDO.setLastoperate("请求报文入库");
-            openAcctTxnInfoDO.setLastupdatetime(new Date());
-            openAcctTxnInfoDO.setRespcode(res.getRespCode());
-            openAcctTxnInfoDO.setRespmsg(res.getRespMsg());
+            dbProcessor.updateModel(openAcctTxnInfoDO,res);
         }
 
-        dbProcessor.updateModel(openAcctTxnInfoDO);
+        dbProcessor.updateModel(openAcctTxnInfoDO,res);
         return res;
     }
 }
