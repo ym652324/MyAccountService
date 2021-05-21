@@ -11,6 +11,9 @@ public enum  AccountEnums {
 
     TRAN_CODE_ERROR("1004","交易码错误"),
 
+    FORMAT_ERROR("10005","报文字段格式错误"),
+
+
 
     ;
 
