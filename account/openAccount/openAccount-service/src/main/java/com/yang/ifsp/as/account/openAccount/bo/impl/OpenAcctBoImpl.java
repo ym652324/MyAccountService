@@ -2,6 +2,8 @@ package com.yang.ifsp.as.account.openAccount.bo.impl;
 
 import com.yang.ifsp.as.account.openAccount.bo.OpenAcctBo;
 import com.yang.ifsp.as.account.openAccount.constants.AccountEnums;
+import com.yang.ifsp.as.account.openAccount.db.dao.AccountInfoDOMapper;
+import com.yang.ifsp.as.account.openAccount.db.model.AccountInfoDO;
 import com.yang.ifsp.as.account.openAccount.db.model.OpenAcctTxnInfoDO;
 import com.yang.ifsp.as.account.openAccount.processor.DbProcessor;
 import com.yang.ifsp.as.account.openAccount.util.CheckUtil;
@@ -25,6 +27,9 @@ public class OpenAcctBoImpl implements OpenAcctBo {
 
     @Autowired
     DbProcessor dbProcessor;
+
+    @Autowired
+    AccountInfoDOMapper accountInfoDOMapper;
 
     @Override
     public OpenAccountRes process(OpenAccountReq req) {
@@ -66,10 +71,44 @@ public class OpenAcctBoImpl implements OpenAcctBo {
             return res;
         }
 
-
         String tranCode = req.getTranCode();
         if("T0001".equals(tranCode)){
+
             logger.info("进入开户接口流程");
+
+            //查库，校验开户类型，及开户数量
+            String accountType = req.getAccountType();
+            if(StringUtils.isEmpty(accountType)||!("1".equals(accountType)||"2".equals(accountType)||"3".equals(accountType))){
+                logger.error("开户接口开户类型不能为空或1、2、3之外的值");
+                res.setRespCode(AccountEnums.VALIDATE_ERROR.getRespCode());
+                res.setRespMsg(AccountEnums.VALIDATE_ERROR.getRespMsg());
+                openAcctTxnInfoDO.setLastoperate("开户接口开户类型非空校验");
+                dbProcessor.updateModel(openAcctTxnInfoDO,res);
+                return res;
+            }
+
+            ArrayList<AccountInfoDO> accounts = accountInfoDOMapper.selectByIdNo(req.getIdNo());
+            int acct1 = 0;
+            int acct2 = 0;
+            int acct3 =0;
+            for(acc : accounts){
+                if("1".equals(openAcctTxnInfoDO.getAccounttype())){
+                    acct1++;
+                }else if("2".equals(openAcctTxnInfoDO.getAccounttype())){
+                    acct2++;
+                }else{
+                    acct3++;
+                }
+            }
+            if(("1".equals(accountType) && acct1>=1)||("2".equals(accountType) && acct2>=2)||("1".equals(accountType) && acct3>=2)){
+                logger.error("开户接口开户类型超过限定数目");
+                res.setRespCode(AccountEnums.VALIDATE_ERROR.getRespCode());
+                res.setRespMsg(AccountEnums.VALIDATE_ERROR.getRespMsg());
+                openAcctTxnInfoDO.setLastoperate("开户接口开户数目校验");
+                dbProcessor.updateModel(openAcctTxnInfoDO,res);
+                return res;
+            }
+
 
 
 

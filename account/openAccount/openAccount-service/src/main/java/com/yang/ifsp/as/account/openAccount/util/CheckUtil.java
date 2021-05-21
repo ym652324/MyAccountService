@@ -48,17 +48,16 @@ public class CheckUtil {
 
     private static boolean checkBindCard(String bindCard) {
 
-
+        if(!checkNum(bindCard)){
+            logger.error("绑定卡号应为数字");
+            return false;
+        }
         return true;
-
-
     }
 
     private static boolean checkMobile(String mobile) {
         String regStr = "^(1)\\d{10}$";
         return Pattern.matches(regStr,mobile);
-
-
     }
 
     private static boolean checkIdNo(String idNo) {
@@ -71,13 +70,29 @@ public class CheckUtil {
             logger.error("身份证号码前17位应为数字");
             return false;
         }
-
-
-
-
+        String last = idNo.substring(-1);
+        if(!("x".equals(last)||"X".equals(last))){
+            logger.error("身份证号最后一位应为x或X");
+            return false;
+        }
+//        String subDay = idNo.substring(6,14);
+//        if(!checkDay(subDay)){
+//            logger.error("身份证号码出生日期无效");
+//            return false;
+//        }
         return true;
     }
 
+//    private static boolean checkDay(String subDay) {
+//        String year = subDay.substring(0,4);
+//        String month = subDay.substring(4,6);
+//        String day = subDay.substring(6,8);
+//        String date = year+"-"+month+"-"+day;
+//        String refStr =
+//
+//
+//
+//    }
     private static boolean checkNum(String num) {
         String regStr = "[0-9]*";
         return Pattern.matches(regStr,num);

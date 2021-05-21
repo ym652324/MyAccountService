@@ -57,6 +57,18 @@ public class OpenAccountReq extends AbstractMSOReq {
     @ApiModelProperty(value = "电子账户")
     private String eAccount;
 
+    @NotBlank
+    @Length(max=10)
+    @ApiModelProperty(value = "开户类型")
+    private String accountType;
+
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
+    }
 
     public String geteAccount() {
         return eAccount;
