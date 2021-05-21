@@ -30,6 +30,7 @@ public class DbProcessor {
             openAcctTxnInfoDO.setRespcode(openAccountRes.getRespCode());
             openAcctTxnInfoDO.setRespmsg(openAccountRes.getRespMsg());
             openAcctTxnInfoDO.setLastupdatetime(openAccountRes.getRespDatetime());
+            openAcctTxnInfoDO.setEaccount(openAccountRes.geteAccount());
             openAcctTxnInfoDOMapper.updateByPrimaryKey(openAcctTxnInfoDO);
         }
 

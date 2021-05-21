@@ -3,11 +3,14 @@ package com.yang.ifsp.as.account.openAccount.bo.impl;
 import com.yang.ifsp.as.account.openAccount.bo.OpenAcctBo;
 import com.yang.ifsp.as.account.openAccount.constants.AccountEnums;
 import com.yang.ifsp.as.account.openAccount.db.dao.AccountInfoDOMapper;
+import com.yang.ifsp.as.account.openAccount.db.dao.UserInfoDOMapper;
 import com.yang.ifsp.as.account.openAccount.db.model.AccountInfoDO;
 import com.yang.ifsp.as.account.openAccount.db.model.OpenAcctTxnInfoDO;
+import com.yang.ifsp.as.account.openAccount.db.model.UserInfoDO;
 import com.yang.ifsp.as.account.openAccount.processor.DbProcessor;
 import com.yang.ifsp.as.account.openAccount.util.CheckUtil;
 import com.yang.ifsp.as.account.openAccount.util.MakeMessage;
+import com.yang.ifsp.as.account.openAccount.util.MakeUidUtil;
 import com.yang.ifsp.as.account.openAccount.vo.OpenAccountReq;
 import com.yang.ifsp.as.account.openAccount.vo.OpenAccountRes;
 import org.apache.commons.lang3.StringUtils;
@@ -31,11 +34,15 @@ public class OpenAcctBoImpl implements OpenAcctBo {
     @Autowired
     AccountInfoDOMapper accountInfoDOMapper;
 
+    @Autowired
+    UserInfoDOMapper userInfoDOMapper;
+
     @Override
     public OpenAccountRes process(OpenAccountReq req) {
         OpenAccountRes res = new OpenAccountRes();
         String reqUid = req.getReqUID();
         OpenAcctTxnInfoDO openAcctTxnInfoDO = new OpenAcctTxnInfoDO();
+
         dbProcessor.insertModel(req,openAcctTxnInfoDO);
 //        if(dbProcessor.insertModel(req,openAcctTxnInfoDO)==0){
 //            logger.error("请求报文入库失败,流水号：[{}]"+reqUid);
@@ -54,6 +61,12 @@ public class OpenAcctBoImpl implements OpenAcctBo {
 //        String mobile = req.getMobilePhone();
 //        String bindCard = req.getBindCard();
         String eAccount = req.geteAccount();
+        String idNo = req.getIdNo();
+        String custName = req.getCustName();
+        String mobile = req.getMobilePhone();
+        String userType = req.getUserType();
+
+
 
         //检查字段合法性
         HashMap<String,String> checkMap = new HashMap<>();
@@ -76,18 +89,18 @@ public class OpenAcctBoImpl implements OpenAcctBo {
 
             logger.info("进入开户接口流程");
 
-            //查库，校验开户类型，及开户数量
+            //查库，校验开户类型，用户类型及开户数量
             String accountType = req.getAccountType();
-            if(StringUtils.isEmpty(accountType)||!("1".equals(accountType)||"2".equals(accountType)||"3".equals(accountType))){
-                logger.error("开户接口开户类型不能为空或1、2、3之外的值");
+            if(StringUtils.isEmpty(userType)||StringUtils.isEmpty(accountType)||!("1".equals(accountType)||"2".equals(accountType)||"3".equals(accountType))){
+                logger.error("开户接口开户类型或用户类型不能为空，开户类型不能为1、2、3之外的值");
                 res.setRespCode(AccountEnums.VALIDATE_ERROR.getRespCode());
                 res.setRespMsg(AccountEnums.VALIDATE_ERROR.getRespMsg());
-                openAcctTxnInfoDO.setLastoperate("开户接口开户类型非空校验");
+                openAcctTxnInfoDO.setLastoperate("开户接口开户类型及用户类型校验");
                 dbProcessor.updateModel(openAcctTxnInfoDO,res);
                 return res;
             }
 
-            ArrayList<AccountInfoDO> accounts = accountInfoDOMapper.selectByIdNo(req.getIdNo());
+            ArrayList<AccountInfoDO> accounts = accountInfoDOMapper.selectByIdNo(idNo);
             int acct1 = 0;
             int acct2 = 0;
             int acct3 =0;
@@ -108,6 +121,33 @@ public class OpenAcctBoImpl implements OpenAcctBo {
                 dbProcessor.updateModel(openAcctTxnInfoDO,res);
                 return res;
             }
+            //开过户的用户，获取用户号
+            if(!accounts.isEmpty()){
+                openAcctTxnInfoDO.setUserid(userInfoDOMapper.selectByIdNo(idNo).getUserid());
+            }else{
+                //未开户用户，生成用户号，插入用户表
+                String userId = MakeUidUtil.makeUserId();
+                openAcctTxnInfoDO.setUserid(userId);
+                UserInfoDO userInfoDO = new UserInfoDO();
+                userInfoDO.setCustname(custName);
+                userInfoDO.setIdno(idNo);
+                userInfoDO.setImage(req.getImage());
+                userInfoDO.setUsertype(userType);
+                userInfoDO.setMobilephone(mobile);
+                userInfoDO.setUserid(userId);
+                userInfoDOMapper.insert(userInfoDO);
+
+            }
+            //生成电子账号
+            eAccount = MakeUidUtil.makeEaccount();
+            openAcctTxnInfoDO.setLastoperate("生成电子账号");
+            res.seteAccount(eAccount);
+            res.setRespCode(AccountEnums.OPENACCT_SUCCESS.getRespCode());
+            res.setRespMsg(AccountEnums.OPENACCT_SUCCESS.getRespCode());
+            dbProcessor.updateModel(openAcctTxnInfoDO,res);
+
+            return res;
+
 
 
 

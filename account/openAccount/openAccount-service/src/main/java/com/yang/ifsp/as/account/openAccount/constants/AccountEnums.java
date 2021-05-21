@@ -13,6 +13,8 @@ public enum  AccountEnums {
 
     FORMAT_ERROR("10005","报文字段格式错误"),
 
+    OPENACCT_SUCCESS("20001","开户成功"),
+
 
 
     ;

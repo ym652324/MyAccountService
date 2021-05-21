@@ -62,6 +62,20 @@ public class OpenAccountReq extends AbstractMSOReq {
     @ApiModelProperty(value = "开户类型")
     private String accountType;
 
+
+    @NotBlank
+    @Length(max=20)
+    @ApiModelProperty(value = "用户类型")
+    private String userType;
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
     public String getAccountType() {
         return accountType;
     }
