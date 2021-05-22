@@ -104,7 +104,7 @@ public class OpenAcctBoImpl implements OpenAcctBo {
             int acct1 = 0;
             int acct2 = 0;
             int acct3 =0;
-            for(acc : accounts){
+            for(AccountInfoDO acc : accounts){
                 if("1".equals(openAcctTxnInfoDO.getAccounttype())){
                     acct1++;
                 }else if("2".equals(openAcctTxnInfoDO.getAccounttype())){
