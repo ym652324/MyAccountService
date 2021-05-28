@@ -9,7 +9,6 @@ import com.yang.ifsp.as.account.openAccount.db.model.OpenAcctTxnInfoDO;
 import com.yang.ifsp.as.account.openAccount.db.model.UserInfoDO;
 import com.yang.ifsp.as.account.openAccount.processor.DbProcessor;
 import com.yang.ifsp.as.account.openAccount.util.CheckUtil;
-import com.yang.ifsp.as.account.openAccount.util.MakeMessage;
 import com.yang.ifsp.as.account.openAccount.util.MakeUidUtil;
 import com.yang.ifsp.as.account.openAccount.vo.OpenAccountReq;
 import com.yang.ifsp.as.account.openAccount.vo.OpenAccountRes;
@@ -19,7 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Array;
+
 import java.util.*;
 
 
@@ -89,13 +88,35 @@ public class OpenAcctBoImpl implements OpenAcctBo {
 
             logger.info("进入开户接口流程");
 
+            //校验用户类型
+            if(StringUtils.isEmpty(userType)){
+                logger.error("开户接口，用户类型不能为空！");
+                res.setRespCode(AccountEnums.VALIDATE_ERROR.getRespCode());
+                res.setRespMsg(AccountEnums.VALIDATE_ERROR.getRespMsg());
+                openAcctTxnInfoDO.setLastoperate("开户接口用户类型校验");
+                dbProcessor.updateModel(openAcctTxnInfoDO,res);
+                return res;
+            }
+
+
+            //校验手机号
+            if(StringUtils.isEmpty(mobile)){
+                logger.error("开户接口，手机号不能为空！");
+                res.setRespCode(AccountEnums.VALIDATE_ERROR.getRespCode());
+                res.setRespMsg(AccountEnums.VALIDATE_ERROR.getRespMsg());
+                openAcctTxnInfoDO.setLastoperate("开户接口手机号校验");
+                dbProcessor.updateModel(openAcctTxnInfoDO,res);
+                return res;
+            }
+
+
             //查库，校验开户类型，用户类型及开户数量
             String accountType = req.getAccountType();
             if(StringUtils.isEmpty(userType)||StringUtils.isEmpty(accountType)||!("1".equals(accountType)||"2".equals(accountType)||"3".equals(accountType))){
                 logger.error("开户接口开户类型或用户类型不能为空，开户类型不能为1、2、3之外的值");
                 res.setRespCode(AccountEnums.VALIDATE_ERROR.getRespCode());
                 res.setRespMsg(AccountEnums.VALIDATE_ERROR.getRespMsg());
-                openAcctTxnInfoDO.setLastoperate("开户接口开户类型及用户类型校验");
+                openAcctTxnInfoDO.setLastoperate("开户接口开户类型及数量校验");
                 dbProcessor.updateModel(openAcctTxnInfoDO,res);
                 return res;
             }
@@ -126,22 +147,24 @@ public class OpenAcctBoImpl implements OpenAcctBo {
                 openAcctTxnInfoDO.setUserid(userInfoDOMapper.selectByIdNo(idNo).getUserid());
             }else{
                 //未开户用户，生成用户号，插入用户表
-                String userId = MakeUidUtil.makeUserId();
-                openAcctTxnInfoDO.setUserid(userId);
+                StringBuilder userId = new StringBuilder("652324");
+                userId = userId.append(MakeUidUtil.getOrderNumber());
+                openAcctTxnInfoDO.setUserid(userId.toString());
                 UserInfoDO userInfoDO = new UserInfoDO();
                 userInfoDO.setCustname(custName);
                 userInfoDO.setIdno(idNo);
                 userInfoDO.setImage(req.getImage());
                 userInfoDO.setUsertype(userType);
                 userInfoDO.setMobilephone(mobile);
-                userInfoDO.setUserid(userId);
+                userInfoDO.setUserid(userId.toString());
                 userInfoDOMapper.insert(userInfoDO);
 
             }
             //生成电子账号
-            eAccount = MakeUidUtil.makeEaccount();
+            StringBuilder account = new StringBuilder("666666");
+            account = account.append(MakeUidUtil.getOrderNumber());
             openAcctTxnInfoDO.setLastoperate("生成电子账号");
-            res.seteAccount(eAccount);
+            res.seteAccount(account.toString());
             res.setRespCode(AccountEnums.OPENACCT_SUCCESS.getRespCode());
             res.setRespMsg(AccountEnums.OPENACCT_SUCCESS.getRespCode());
             dbProcessor.updateModel(openAcctTxnInfoDO,res);

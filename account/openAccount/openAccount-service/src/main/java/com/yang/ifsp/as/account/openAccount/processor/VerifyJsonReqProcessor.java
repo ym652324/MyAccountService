@@ -21,11 +21,8 @@ public class VerifyJsonReqProcessor {
 
     private static Logger logger = LoggerFactory.getLogger(VerifyJsonReqProcessor.class);
 
-
     @Autowired
     ReqUidUtil reqUidUtil;
-
-
 
     public boolean verifyJsonReqMsg(OpenAccountReq openAccountReq, OpenAccountRes openAccountRes){
         logger.info("***********************校验请求报文***********************");
@@ -45,11 +42,12 @@ public class VerifyJsonReqProcessor {
             logger.error("***************校验请求报文非法*****************");
             StringBuffer stringBuffer= new StringBuffer();
             errorMap.forEach((s,stringBuilder) -> {
-                stringBuilder.append(s+":"+errorMap.get(s)+",");
+                stringBuffer.append(s+":"+errorMap.get(s)+",");
             });
             stringBuffer.deleteCharAt(stringBuffer.length()-1);
             openAccountRes.setRespCode(AccountEnums.VALIDATE_ERROR.getRespCode());
             openAccountRes.setRespMsg(AccountEnums.VALIDATE_ERROR.getRespMsg());
+            logger.info("报文校验失败，具体原因为【"+stringBuffer+"】,返回内容：【"+AccountEnums.VALIDATE_ERROR.getRespMsg()+"】");
         }
         return errorMap;
     }

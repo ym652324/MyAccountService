@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotBlank;
+import java.util.Arrays;
 
 
 public class OpenAccountReq extends AbstractMSOReq {
@@ -16,12 +17,12 @@ public class OpenAccountReq extends AbstractMSOReq {
     @ApiModelProperty(value = "姓名",required = true)
     private String custName;
 
-    @NotBlank
+
     @Length(max=20)
     @ApiModelProperty(value = "手机号")
     private String mobilePhone;
 
-    @NotBlank
+
     @Length(max=30)
     @ApiModelProperty(value = "绑定卡")
     private String bindCard;
@@ -41,7 +42,7 @@ public class OpenAccountReq extends AbstractMSOReq {
     @ApiModelProperty(value = "登陆密码",required = true)
     private String logPassword;
 
-    @NotBlank
+
     @Length(max=255)
     @ApiModelProperty(value = "支付密码")
     private String payPassword;
@@ -52,7 +53,8 @@ public class OpenAccountReq extends AbstractMSOReq {
     @ApiModelProperty(value = "交易码",required = true)
     private String tranCode;
 
-    @NotBlank
+
+
     @Length(max=30)
     @ApiModelProperty(value = "电子账户")
     private String eAccount;
@@ -156,5 +158,23 @@ public class OpenAccountReq extends AbstractMSOReq {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+
+    @Override
+    public String toString() {
+        return "OpenAccountReq{" +
+                "custName='" + custName + '\'' +
+                ", mobilePhone='" + mobilePhone + '\'' +
+                ", bindCard='" + bindCard + '\'' +
+                ", idNo='" + idNo + '\'' +
+                ", image=" + Arrays.toString(image) +
+                ", logPassword='" + logPassword + '\'' +
+                ", payPassword='" + payPassword + '\'' +
+                ", tranCode='" + tranCode + '\'' +
+                ", eAccount='" + eAccount + '\'' +
+                ", accountType='" + accountType + '\'' +
+                ", userType='" + userType + '\'' +
+                '}';
     }
 }

@@ -1,5 +1,8 @@
 package com.yang.ifsp.common.redis;
 
+import org.springframework.stereotype.Component;
+
+
 public interface RedisService {
 
     /**
