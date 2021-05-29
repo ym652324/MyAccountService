@@ -84,7 +84,7 @@ public class MakeUidUtil {
     // 这里读取的是配置文件
     // 机器id(我这里是01,正式环境建议使用机器IP)
     // 注意：分布式环境,注意每台机器的id要保证不同;也可以使用机器ip,映射成一个数字编号（如01:192.168.55.12）
-    private static String myid= "127001";
+    private static String myid= "01";
 
     // 示例
     private static MakeUidUtil instance = new MakeUidUtil(myid);

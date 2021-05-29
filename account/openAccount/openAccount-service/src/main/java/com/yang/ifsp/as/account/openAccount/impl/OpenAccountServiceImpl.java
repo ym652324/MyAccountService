@@ -46,6 +46,10 @@ public class OpenAccountServiceImpl implements OpenAccountService {
 
         openAccountRes = openAcctBoImpl.process(openAccountReq);
 
+
+        logger.info("处理完成，响应报文："+openAccountRes.toString());
+        logger.info("-----------------------------------------------------------------------------");
+
         return  openAccountRes;
 
     }

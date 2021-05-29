@@ -9,6 +9,7 @@ import com.yang.ifsp.as.account.openAccount.db.model.OpenAcctTxnInfoDO;
 import com.yang.ifsp.as.account.openAccount.db.model.UserInfoDO;
 import com.yang.ifsp.as.account.openAccount.processor.DbProcessor;
 import com.yang.ifsp.as.account.openAccount.util.CheckUtil;
+import com.yang.ifsp.as.account.openAccount.util.MakeMessage;
 import com.yang.ifsp.as.account.openAccount.util.MakeUidUtil;
 import com.yang.ifsp.as.account.openAccount.vo.OpenAccountReq;
 import com.yang.ifsp.as.account.openAccount.vo.OpenAccountRes;
@@ -39,6 +40,7 @@ public class OpenAcctBoImpl implements OpenAcctBo {
     @Override
     public OpenAccountRes process(OpenAccountReq req) {
         OpenAccountRes res = new OpenAccountRes();
+        MakeMessage.makeOpenAcctCommonRes(req,res);
         OpenAcctTxnInfoDO openAcctTxnInfoDO = new OpenAcctTxnInfoDO();
 
         dbProcessor.insertModel(req,openAcctTxnInfoDO);
@@ -161,7 +163,7 @@ public class OpenAcctBoImpl implements OpenAcctBo {
                 openAcctTxnInfoDO.setUserid(userInfoDOMapper.selectByIdNo(idNo).getUserid());
             }else{
                 //未开户用户，生成用户号，插入用户表
-                StringBuilder userId = new StringBuilder("652324");
+                StringBuilder userId = new StringBuilder("6523");
                 userId = userId.append(MakeUidUtil.getOrderNumber());
                 openAcctTxnInfoDO.setUserid(userId.toString());
                 UserInfoDO userInfoDO = new UserInfoDO();
@@ -172,21 +174,21 @@ public class OpenAcctBoImpl implements OpenAcctBo {
                 userInfoDO.setMobilephone(mobile);
                 userInfoDO.setUserid(userId.toString());
                 userInfoDOMapper.insert(userInfoDO);
+                logger.info("生成客户号："+userId);
 
             }
             //生成电子账号
-            StringBuilder account = new StringBuilder("666666");
+            StringBuilder account = new StringBuilder("6666");
             account = account.append(MakeUidUtil.getOrderNumber());
             openAcctTxnInfoDO.setLastoperate("生成电子账号");
             res.seteAccount(account.toString());
             res.setRespCode(AccountEnums.OPENACCT_SUCCESS.getRespCode());
-            res.setRespMsg(AccountEnums.OPENACCT_SUCCESS.getRespCode());
+            res.setRespMsg(AccountEnums.OPENACCT_SUCCESS.getRespMsg());
             dbProcessor.updateModel(openAcctTxnInfoDO,res);
 
+            logger.info("开户成功！电子账号为："+account);
+
             return res;
-
-
-
 
 
 
@@ -200,6 +202,7 @@ public class OpenAcctBoImpl implements OpenAcctBo {
 //                openAcctTxnInfoDO.setRespcode(res.getRespCode());
 //                openAcctTxnInfoDO.setRespmsg(res.getRespMsg());
                 dbProcessor.updateModel(openAcctTxnInfoDO,res);
+                logger.info("补录成功！流水号为："+reqUid);
                 return res;
             }
 

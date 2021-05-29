@@ -22,6 +22,8 @@ public class CreateModelUtil {
         openAcctTxnInfoDO.setTrantype(req.getTranType());
         openAcctTxnInfoDO.setLastoperate("校验报文及流水号");
         openAcctTxnInfoDO.setLastupdatetime(new Date());
+        openAcctTxnInfoDO.setAccounttype(req.getAccountType());
+        openAcctTxnInfoDO.setUsertype(req.getUserType());
         return openAcctTxnInfoDO;
     }
 }

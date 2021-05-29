@@ -68,7 +68,12 @@ public class OpenAccountRes extends AbstractMSORes{
     @Override
     public String toString() {
         return "OpenAccountRes{" +
-                "eAccount='" + eAccount + '\'' +
+                "reqUID='" + getReqUID() + '\'' +
+                ", respDatetime='" + getRespDatetime()+ '\'' +
+                ", tranCode='" + getTranType() + '\'' +
+                ",respCode='" + getRespCode() + '\'' +
+                ", respMsg='" + getRespMsg() + '\'' +
+                ",eAccount='" + eAccount + '\'' +
                 ", custName='" + custName + '\'' +
                 ", idNo='" + idNo + '\'' +
                 '}';
