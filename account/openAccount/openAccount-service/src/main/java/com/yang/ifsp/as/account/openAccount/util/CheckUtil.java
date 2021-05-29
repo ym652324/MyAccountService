@@ -19,6 +19,7 @@ public class CheckUtil {
             if(!checkName(checkMap.get("custName"))){
                 errorMap.put("0","false");
                 errorMap.put("1","custName");
+                return errorMap;
             }
         }
 
@@ -26,6 +27,7 @@ public class CheckUtil {
             if(!checkIdNo(checkMap.get("idNo"))){
                 errorMap.put("0","false");
                 errorMap.put("1","idNo");
+                return errorMap;
             }
         }
 
@@ -33,6 +35,7 @@ public class CheckUtil {
             if(!checkMobile(checkMap.get("mobilePhone"))){
                 errorMap.put("0","false");
                 errorMap.put("1","mobilePhone");
+                return errorMap;
             }
         }
 
@@ -40,6 +43,7 @@ public class CheckUtil {
             if(!checkBindCard(checkMap.get("bindCard"))){
                 errorMap.put("0","false");
                 errorMap.put("1","bindCard");
+                return errorMap;
             }
         }
 
@@ -61,7 +65,7 @@ public class CheckUtil {
     }
 
     private static boolean checkIdNo(String idNo) {
-        if(idNo.length()<18){
+        if(idNo.length() != 18){
             logger.error("身份证号码长度应为18");
             return false;
         }
@@ -70,29 +74,21 @@ public class CheckUtil {
             logger.error("身份证号码前17位应为数字");
             return false;
         }
-        String last = idNo.substring(-1);
-        if(!("x".equals(last)||"X".equals(last))){
-            logger.error("身份证号最后一位应为x或X");
+        String last = idNo.substring(idNo.length()-1);
+        if(!(checkNum(last)||"x".equals(last)||"X".equals(last))){
+            logger.error("身份证号码最后一位应为数字或X、x");
             return false;
         }
-//        String subDay = idNo.substring(6,14);
-//        if(!checkDay(subDay)){
-//            logger.error("身份证号码出生日期无效");
+//        String last = idNo.substring(idNo.length()-1);
+//        if(!("x".equals(last)||"X".equals(last))){
+//            logger.error("身份证号最后一位应为x或X");
 //            return false;
 //        }
+
         return true;
     }
 
-//    private static boolean checkDay(String subDay) {
-//        String year = subDay.substring(0,4);
-//        String month = subDay.substring(4,6);
-//        String day = subDay.substring(6,8);
-//        String date = year+"-"+month+"-"+day;
-//        String refStr =
-//
-//
-//
-//    }
+
     private static boolean checkNum(String num) {
         String regStr = "[0-9]*";
         return Pattern.matches(regStr,num);

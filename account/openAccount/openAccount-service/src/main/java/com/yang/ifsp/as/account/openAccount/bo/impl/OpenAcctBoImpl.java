@@ -42,6 +42,7 @@ public class OpenAcctBoImpl implements OpenAcctBo {
         OpenAcctTxnInfoDO openAcctTxnInfoDO = new OpenAcctTxnInfoDO();
 
         dbProcessor.insertModel(req,openAcctTxnInfoDO);
+        logger.info("请求报文入库成功");
 //        if(dbProcessor.insertModel(req,openAcctTxnInfoDO)==0){
 //            logger.error("请求报文入库失败,流水号：[{}]"+reqUid);
 //            res.setRespCode(AccountEnums.SYSTEM_INNRT_ERROR.getRespCode());
@@ -87,8 +88,8 @@ public class OpenAcctBoImpl implements OpenAcctBo {
         checkMap.put("mobilePhone",req.getMobilePhone());
         checkMap.put("bindCard",req.getBindCard());
         HashMap<String,String> resultMap = CheckUtil.check(checkMap);
-        if("false".equals(resultMap.get(0))){
-            logger.error("请求报文[{]]字段校验失败"+resultMap.get(1));
+        if("false".equals(resultMap.get("0"))){
+            logger.error("请求报文[{"+resultMap.get("1")+"]]字段校验失败");
             res.setRespCode(AccountEnums.FORMAT_ERROR.getRespCode());
             res.setRespMsg(AccountEnums.FORMAT_ERROR.getRespMsg());
             openAcctTxnInfoDO.setLastoperate("请求报文字段合法性校验");

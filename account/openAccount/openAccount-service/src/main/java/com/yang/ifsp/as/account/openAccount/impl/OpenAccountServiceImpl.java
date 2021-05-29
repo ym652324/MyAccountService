@@ -27,7 +27,7 @@ public class OpenAccountServiceImpl implements OpenAccountService {
     @Override
     public @ResponseBody
     OpenAccountRes doOpenAccount(@RequestBody OpenAccountReq openAccountReq) {
-
+        logger.info("-----------------------------------------------------------------------------");
         logger.info("接收到请求："+openAccountReq.toString());
 
         OpenAccountRes openAccountRes = new OpenAccountRes();
