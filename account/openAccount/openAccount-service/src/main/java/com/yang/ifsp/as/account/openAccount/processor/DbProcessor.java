@@ -19,7 +19,7 @@ public class DbProcessor {
 
     public int insertModel(OpenAccountReq req, OpenAcctTxnInfoDO openAcctTxnInfoDO){
         openAcctTxnInfoDO = CreateModelUtil.createModel(req, openAcctTxnInfoDO);
-        return openAcctTxnInfoDOMapper.insert(openAcctTxnInfoDO);
+        return openAcctTxnInfoDOMapper.insertSelective(openAcctTxnInfoDO);
     }
 
     public void updateModel(Object obj,Object res) {

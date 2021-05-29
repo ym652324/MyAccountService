@@ -39,7 +39,6 @@ public class OpenAcctBoImpl implements OpenAcctBo {
     @Override
     public OpenAccountRes process(OpenAccountReq req) {
         OpenAccountRes res = new OpenAccountRes();
-        String reqUid = req.getReqUID();
         OpenAcctTxnInfoDO openAcctTxnInfoDO = new OpenAcctTxnInfoDO();
 
         dbProcessor.insertModel(req,openAcctTxnInfoDO);
@@ -59,11 +58,25 @@ public class OpenAcctBoImpl implements OpenAcctBo {
 //        String idNo = req.getIdNo();
 //        String mobile = req.getMobilePhone();
 //        String bindCard = req.getBindCard();
+        String reqUid = req.getReqUID();
         String eAccount = req.geteAccount();
         String idNo = req.getIdNo();
         String custName = req.getCustName();
         String mobile = req.getMobilePhone();
         String userType = req.getUserType();
+        String tranType = req.getTranType();
+        String tranCode = req.getTranCode();
+
+
+        //校验交易码
+        if(StringUtils.isEmpty(tranCode)){
+            logger.error("开户接口，交易码错误！");
+            res.setRespCode(AccountEnums.VALIDATE_ERROR.getRespCode());
+            res.setRespMsg(AccountEnums.VALIDATE_ERROR.getRespMsg());
+            openAcctTxnInfoDO.setLastoperate("开户接口交易码校验");
+            dbProcessor.updateModel(openAcctTxnInfoDO,res);
+            return res;
+        }
 
 
 
@@ -83,10 +96,10 @@ public class OpenAcctBoImpl implements OpenAcctBo {
             return res;
         }
 
-        String tranCode = req.getTranCode();
-        if("T0001".equals(tranCode)){
 
-            logger.info("进入开户接口流程");
+        if("T0001".equals(tranType)){
+
+            logger.info("进入开户接口流程,请求流水号："+reqUid);
 
             //校验用户类型
             if(StringUtils.isEmpty(userType)){
@@ -176,8 +189,8 @@ public class OpenAcctBoImpl implements OpenAcctBo {
 
 
 
-        }else if("T0002".equals(tranCode)){
-            logger.info("进入补录接口流程");
+        }else if("T0002".equals(tranType)){
+            logger.info("进入补录接口流程，请求流水号："+reqUid);
             if(StringUtils.isEmpty(eAccount)){
                 logger.error("补录接口电子账号不能为空");
                 res.setRespCode(AccountEnums.VALIDATE_ERROR.getRespCode());
@@ -192,7 +205,7 @@ public class OpenAcctBoImpl implements OpenAcctBo {
 
 
         }else{
-            logger.error("无效的交易码");
+            logger.error("无效的交易码:"+tranType);
             res.setRespCode(AccountEnums.TRAN_CODE_ERROR.getRespCode());
             res.setRespMsg(AccountEnums.TRAN_CODE_ERROR.getRespMsg());
             openAcctTxnInfoDO.setLastoperate("请求报文入库");

@@ -19,7 +19,7 @@ public class CreateModelUtil {
         openAcctTxnInfoDO.setMobilephone(req.getMobilePhone());
         openAcctTxnInfoDO.setImage(req.getImage());
         openAcctTxnInfoDO.setEaccount(req.geteAccount());
-        openAcctTxnInfoDO.setTrancode(req.getTranCode());
+        openAcctTxnInfoDO.setTrantype(req.getTranType());
         openAcctTxnInfoDO.setLastoperate("校验报文及流水号");
         openAcctTxnInfoDO.setLastupdatetime(new Date());
         return openAcctTxnInfoDO;

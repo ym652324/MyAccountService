@@ -4,21 +4,25 @@ import java.io.Serializable;
 import java.util.Date;
 
 import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotBlank;
 
 public abstract class AbstractMSOReq implements Serializable {
     private static final long serialVersionUID = -8425737953742671465L;
 
-    @ApiModelProperty(
-            value = "请求流水号",
-            required = true
-    )
+
+    @NotBlank
+    @Length(max=20)
+    @ApiModelProperty(value = "请求流水号",required = true)
     private String reqUID;
 
-    @ApiModelProperty(
-            value = "交易码",
-            required = true
-    )
+
+    @NotBlank
+    @Length(max=20)
+    @ApiModelProperty(value = "交易码",required = true)
     private String tranCode;
+
 
     @ApiModelProperty(
             value = "请求时间",

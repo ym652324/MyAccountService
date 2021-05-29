@@ -38,6 +38,7 @@ public class OpenAccountServiceImpl implements OpenAccountService {
         }
 
         String reqUid = openAccountReq.getReqUID();
+        logger.info("请求流水号："+reqUid);
         boolean reqUidFlag = verifyJsonReqProcessor.verifyReqUid(openAccountReq,reqUid,openAccountRes);
         if(!reqUidFlag){
             return openAccountRes;

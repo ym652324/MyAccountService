@@ -50,8 +50,8 @@ public class OpenAccountReq extends AbstractMSOReq {
 
     @NotBlank
     @Length(max=20)
-    @ApiModelProperty(value = "交易码",required = true)
-    private String tranCode;
+    @ApiModelProperty(value = "交易类型",required = true)
+    private String tranType;
 
 
 
@@ -110,14 +110,12 @@ public class OpenAccountReq extends AbstractMSOReq {
         this.payPassword = payPassword;
     }
 
-    @Override
-    public String getTranCode() {
-        return tranCode;
+    public String getTranType() {
+        return tranType;
     }
 
-    @Override
-    public void setTranCode(String tranCode) {
-        this.tranCode = tranCode;
+    public void setTranType(String tranType) {
+        this.tranType = tranType;
     }
 
     public String getCustName() {
@@ -164,6 +162,9 @@ public class OpenAccountReq extends AbstractMSOReq {
     @Override
     public String toString() {
         return "OpenAccountReq{" +
+                "reqUid='" + getReqUID() + '\'' +
+                "tranCode='" + getTranCode() + '\'' +
+                "reqDatetime='" + getReqDatetime() + '\'' +
                 "custName='" + custName + '\'' +
                 ", mobilePhone='" + mobilePhone + '\'' +
                 ", bindCard='" + bindCard + '\'' +
@@ -171,7 +172,7 @@ public class OpenAccountReq extends AbstractMSOReq {
                 ", image=" + Arrays.toString(image) +
                 ", logPassword='" + logPassword + '\'' +
                 ", payPassword='" + payPassword + '\'' +
-                ", tranCode='" + tranCode + '\'' +
+                ", tranType='" + tranType + '\'' +
                 ", eAccount='" + eAccount + '\'' +
                 ", accountType='" + accountType + '\'' +
                 ", userType='" + userType + '\'' +

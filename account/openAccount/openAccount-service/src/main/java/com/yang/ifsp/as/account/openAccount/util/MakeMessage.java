@@ -17,5 +17,6 @@ public class MakeMessage {
         //报文体
         openAccountRes.setCustName(openAccountReq.getCustName());
         openAccountRes.setIdNo(openAccountReq.getIdNo());
+        openAccountRes.setTranType(openAccountReq.getTranType());
     }
 }

@@ -61,9 +61,10 @@ public class VerifyJsonReqProcessor {
             openAccountRes.setRespMsg(AccountEnums.REQUID_CHECK_ERROR.getRespMsg());
 
             MakeMessage.makeOpenAcctCommonRes(openAccountReq,openAccountRes);
+            return false;
 
         }
-        logger.info("*******************校验请求流水号[{}]通过********************"+reqUid);
+        logger.info("*******************校验请求流水号【{"+reqUid+"}】校验通过********************");
         return true;
     }
 }

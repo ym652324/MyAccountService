@@ -27,6 +27,20 @@ public class OpenAccountRes extends AbstractMSORes{
     )
     private String idNo;
 
+    @ApiModelProperty(
+            value = "交易类型",
+            required = true
+    )
+    private String tranType;
+
+    public String getTranType() {
+        return tranType;
+    }
+
+    public void setTranType(String tranType) {
+        this.tranType = tranType;
+    }
+
     public String geteAccount() {
         return eAccount;
     }
