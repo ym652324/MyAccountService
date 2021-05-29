@@ -170,8 +170,8 @@ public class OpenAccountReq extends AbstractMSOReq {
                 ", bindCard='" + bindCard + '\'' +
                 ", idNo='" + idNo + '\'' +
                 ", image=" + Arrays.toString(image) +
-                ", logPassword='" + logPassword + '\'' +
-                ", payPassword='" + payPassword + '\'' +
+                ", logPassword= ********'" + '\'' +
+                ", payPassword= ********'" + '\'' +
                 ", tranType='" + tranType + '\'' +
                 ", eAccount='" + eAccount + '\'' +
                 ", accountType='" + accountType + '\'' +

@@ -175,6 +175,7 @@ public class OpenAcctBoImpl implements OpenAcctBo {
                 userInfoDO.setUserid(userId.toString());
                 userInfoDOMapper.insert(userInfoDO);
                 logger.info("生成客户号："+userId);
+                openAcctTxnInfoDO.setUserid(userId.toString());
 
             }
             //生成电子账号
@@ -185,7 +186,9 @@ public class OpenAcctBoImpl implements OpenAcctBo {
             res.setRespCode(AccountEnums.OPENACCT_SUCCESS.getRespCode());
             res.setRespMsg(AccountEnums.OPENACCT_SUCCESS.getRespMsg());
             dbProcessor.updateModel(openAcctTxnInfoDO,res);
-
+            AccountInfoDO accountInfoDO = new AccountInfoDO();
+            dbProcessor.insertModel(accountInfoDO,openAcctTxnInfoDO);
+            dbProcessor.updateModel(accountInfoDO,req);
             logger.info("开户成功！电子账号为："+account);
 
             return res;
