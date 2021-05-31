@@ -159,6 +159,7 @@ public class OpenAcctBoImpl implements OpenAcctBo {
                 return res;
             }
             //开过户的用户，获取用户号
+
             if(!accounts.isEmpty()){
                 openAcctTxnInfoDO.setUserid(userInfoDOMapper.selectByIdNo(idNo).getUserid());
             }else{

@@ -52,6 +52,7 @@ public class DbProcessor {
             AccountInfoDO accountInfoDO = (AccountInfoDO) objs[0];
             OpenAcctTxnInfoDO openAcctTxnInfoDO = (OpenAcctTxnInfoDO) objs[1];
             OpenAccountReq openAccountReq = (OpenAccountReq) objs[2];
+            accountInfoDO.setCustname(openAcctTxnInfoDO.getCustname());
             accountInfoDO.setBindcard(openAcctTxnInfoDO.getBindcard());
             accountInfoDO.setEaccount(openAcctTxnInfoDO.getEaccount());
             accountInfoDO.setUserid(openAcctTxnInfoDO.getUserid());
