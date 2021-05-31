@@ -43,7 +43,7 @@ public class OpenAcctBoImpl implements OpenAcctBo {
         MakeMessage.makeOpenAcctCommonRes(req,res);
         OpenAcctTxnInfoDO openAcctTxnInfoDO = new OpenAcctTxnInfoDO();
 
-        dbProcessor.insertModel(req,openAcctTxnInfoDO);
+        dbProcessor.insertModel(openAcctTxnInfoDO,req);
         logger.info("请求报文入库成功");
 //        if(dbProcessor.insertModel(req,openAcctTxnInfoDO)==0){
 //            logger.error("请求报文入库失败,流水号：[{}]"+reqUid);
@@ -152,8 +152,8 @@ public class OpenAcctBoImpl implements OpenAcctBo {
             }
             if(("1".equals(accountType) && acct1>=1)||("2".equals(accountType) && acct2>=2)||("1".equals(accountType) && acct3>=2)){
                 logger.error("开户接口开户类型超过限定数目");
-                res.setRespCode(AccountEnums.VALIDATE_ERROR.getRespCode());
-                res.setRespMsg(AccountEnums.VALIDATE_ERROR.getRespMsg());
+                res.setRespCode(AccountEnums.OPENACCT_SUM_ERROR.getRespCode());
+                res.setRespMsg(AccountEnums.OPENACCT_SUM_ERROR.getRespMsg());
                 openAcctTxnInfoDO.setLastoperate("开户接口开户数目校验");
                 dbProcessor.updateModel(openAcctTxnInfoDO,res);
                 return res;
@@ -181,14 +181,15 @@ public class OpenAcctBoImpl implements OpenAcctBo {
             //生成电子账号
             StringBuilder account = new StringBuilder("6666");
             account = account.append(MakeUidUtil.getOrderNumber());
+            logger.info("生成电子账号："+account);
             openAcctTxnInfoDO.setLastoperate("生成电子账号");
             res.seteAccount(account.toString());
             res.setRespCode(AccountEnums.OPENACCT_SUCCESS.getRespCode());
             res.setRespMsg(AccountEnums.OPENACCT_SUCCESS.getRespMsg());
             dbProcessor.updateModel(openAcctTxnInfoDO,res);
             AccountInfoDO accountInfoDO = new AccountInfoDO();
-            dbProcessor.insertModel(accountInfoDO,openAcctTxnInfoDO);
-            dbProcessor.updateModel(accountInfoDO,req);
+            dbProcessor.insertModel(accountInfoDO,openAcctTxnInfoDO,req);
+
             logger.info("开户成功！电子账号为："+account);
 
             return res;
