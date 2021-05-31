@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="openAccount-api" />
         <module name="openAccount-service" />
+        <module name="openAccount-batch" />
         <module name="common-tools" />
       </profile>
     </annotationProcessing>
@@ -16,7 +17,6 @@
       <module name="accountService" target="1.8" />
       <module name="channel" target="1.8" />
       <module name="ocr" target="1.8" />
-      <module name="openAccount-batch" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
