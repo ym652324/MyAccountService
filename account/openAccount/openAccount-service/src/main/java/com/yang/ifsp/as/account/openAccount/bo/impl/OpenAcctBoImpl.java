@@ -69,6 +69,7 @@ public class OpenAcctBoImpl implements OpenAcctBo {
         String userType = req.getUserType();
         String tranType = req.getTranType();
         String tranCode = req.getTranCode();
+        String bindCard = req.getBindCard();
 
 
         //校验交易码
@@ -204,13 +205,63 @@ public class OpenAcctBoImpl implements OpenAcctBo {
                 res.setRespCode(AccountEnums.VALIDATE_ERROR.getRespCode());
                 res.setRespMsg(AccountEnums.VALIDATE_ERROR.getRespMsg());
                 openAcctTxnInfoDO.setLastoperate("补录接口电子账号非空校验");
-//                openAcctTxnInfoDO.setRespcode(res.getRespCode());
-//                openAcctTxnInfoDO.setRespmsg(res.getRespMsg());
                 dbProcessor.updateModel(openAcctTxnInfoDO,res);
-                logger.info("补录成功！流水号为："+reqUid);
                 return res;
             }
 
+            byte[] image = req.getImage();
+            if(StringUtils.isEmpty(custName) && StringUtils.isEmpty(bindCard) && StringUtils.isEmpty(mobile) &&
+                    (image == null || image.length == 0) && StringUtils.isEmpty(req.getPayPassword()) &&
+                    StringUtils.isEmpty(req.getLogPassword())
+            ){
+                logger.error("补录接口姓名、绑定卡、手机号、影像件、支付密码、登陆密码至少应有一个不为空");
+                res.setRespCode(AccountEnums.VALIDATE_ERROR.getRespCode());
+                res.setRespMsg(AccountEnums.VALIDATE_ERROR.getRespMsg());
+                openAcctTxnInfoDO.setLastoperate("补录接口必输校验");
+                dbProcessor.updateModel(openAcctTxnInfoDO,res);
+                return res;
+            }
+
+            AccountInfoDO accountInfoDO = accountInfoDOMapper.selectByPrimaryKey(eAccount);
+
+            if(!idNo.equals(accountInfoDO.getIdno())){
+                logger.error("上传身份证号与原证件号不符");
+                res.setRespCode(AccountEnums.NOT_EQUAL_ERROR.getRespCode());
+                res.setRespMsg(AccountEnums.NOT_EQUAL_ERROR.getRespMsg());
+                openAcctTxnInfoDO.setLastoperate("身份证一致性校验");
+                dbProcessor.updateModel(openAcctTxnInfoDO,res);
+                return res;
+            }
+
+            UserInfoDO userInfoDO = userInfoDOMapper.selectByIdNo(idNo);
+
+            if(!StringUtils.isEmpty(custName)){
+                accountInfoDO.setCustname(custName);
+                userInfoDO.setCustname(custName);
+            }
+            if(!StringUtils.isEmpty(bindCard)){
+                accountInfoDO.setBindcard(bindCard);
+            }
+            if(!StringUtils.isEmpty(mobile)){
+                userInfoDO.setMobilephone(mobile);
+            }
+            if(!(image == null || image.length == 0)){
+                userInfoDO.setImage(image);
+            }
+            if(!StringUtils.isEmpty(req.getLogPassword())) {
+                accountInfoDO.setLogpassword(req.getLogPassword());
+            }
+            if(!StringUtils.isEmpty(req.getPayPassword())){
+                accountInfoDO.setPaypassword(req.getPayPassword());
+            }
+            userInfoDOMapper.updateByPrimaryKeySelective(userInfoDO);
+            accountInfoDOMapper.updateByPrimaryKeySelective(accountInfoDO);
+
+            res.seteAccount(req.geteAccount());
+            res.setRespCode(AccountEnums.ADD_INFO_SUCCESS.getRespCode());
+            res.setRespMsg(AccountEnums.ADD_INFO_SUCCESS.getRespMsg());
+            openAcctTxnInfoDO.setLastoperate("补录完成");
+            logger.info("补录接口补录完成！流水号："+reqUid);
 
 
         }else{

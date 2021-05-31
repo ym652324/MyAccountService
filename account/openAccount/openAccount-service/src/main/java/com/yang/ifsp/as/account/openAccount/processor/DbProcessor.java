@@ -6,7 +6,6 @@ import com.yang.ifsp.as.account.openAccount.db.model.AccountInfoDO;
 import com.yang.ifsp.as.account.openAccount.db.model.OpenAcctTxnInfoDO;
 import com.yang.ifsp.as.account.openAccount.vo.OpenAccountReq;
 import com.yang.ifsp.as.account.openAccount.vo.OpenAccountRes;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,8 +83,6 @@ public class DbProcessor {
         if(obj instanceof AccountInfoDO){
             AccountInfoDO accountInfoDO = (AccountInfoDO)obj;
             OpenAccountReq openAccountReq = (OpenAccountReq) srcObj;
-            logger.info("openAccountReq中Logpassword为："+openAccountReq.getLogPassword());
-            accountInfoDO.setLogpassword(openAccountReq.getLogPassword());
             logger.info("accountInfoDO中Logpassword为："+accountInfoDO.getLogpassword());
             accountInfoDO.setPaypassword(openAccountReq.getPayPassword());
             accountInfoDOMapper.updateByPrimaryKeySelective(accountInfoDO);

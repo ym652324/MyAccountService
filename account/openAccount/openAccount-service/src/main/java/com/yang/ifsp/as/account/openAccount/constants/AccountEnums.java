@@ -15,7 +15,11 @@ public enum  AccountEnums {
 
     OPENACCT_SUM_ERROR("10006","超过该类型账户开户个数限制"),
 
+    NOT_EQUAL_ERROR("10007","上送信息与原信息不符"),
+
     OPENACCT_SUCCESS("20001","开户成功"),
+
+    ADD_INFO_SUCCESS("20002","补录成功"),
 
 
 

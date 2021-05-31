@@ -163,9 +163,9 @@ public class OpenAccountReq extends AbstractMSOReq {
     public String toString() {
         return "OpenAccountReq{" +
                 "reqUid='" + getReqUID() + '\'' +
-                "tranCode='" + getTranCode() + '\'' +
-                "reqDatetime='" + getReqDatetime() + '\'' +
-                "custName='" + custName + '\'' +
+                "，tranCode='" + getTranCode() + '\'' +
+                "，reqDatetime='" + getReqDatetime() + '\'' +
+                "，custName='" + custName + '\'' +
                 ", mobilePhone='" + mobilePhone + '\'' +
                 ", bindCard='" + bindCard + '\'' +
                 ", idNo='" + idNo + '\'' +
