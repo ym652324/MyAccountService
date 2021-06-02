@@ -1,7 +1,7 @@
 package com.yang.ifsp.as.account.openAccount.processor;
 
 import com.yang.ifsp.as.account.openAccount.constants.AccountEnums;
-import com.yang.ifsp.as.account.openAccount.util.MakeMessage;
+import com.yang.ifsp.as.account.openAccount.util.MakeCommon;
 import com.yang.ifsp.as.account.openAccount.vo.OpenAccountReq;
 import com.yang.ifsp.as.account.openAccount.vo.OpenAccountRes;
 //import com.yang.ifsp.common.redis.CacheReqUidUtil;
@@ -29,7 +29,7 @@ public class VerifyJsonReqProcessor {
         Map errorMap = verifyRequest(openAccountReq,openAccountRes);
 
         if(errorMap != null){
-            MakeMessage.makeOpenAcctCommonRes(openAccountReq,openAccountRes);
+            MakeCommon.makeOpenAcctCommonRes(openAccountReq,openAccountRes);
             return false;
         }
         logger.info("***********************请求报文通过***********************");
@@ -60,7 +60,7 @@ public class VerifyJsonReqProcessor {
             openAccountRes.setRespCode(AccountEnums.REQUID_CHECK_ERROR.getRespCode());
             openAccountRes.setRespMsg(AccountEnums.REQUID_CHECK_ERROR.getRespMsg());
 
-            MakeMessage.makeOpenAcctCommonRes(openAccountReq,openAccountRes);
+            MakeCommon.makeOpenAcctCommonRes(openAccountReq,openAccountRes);
             return false;
 
         }
