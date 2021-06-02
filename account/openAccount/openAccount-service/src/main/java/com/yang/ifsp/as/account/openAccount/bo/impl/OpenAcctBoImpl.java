@@ -55,7 +55,7 @@ public class OpenAcctBoImpl implements OpenAcctBo {
         String bindCard = req.getBindCard();
 
         //校验交易码及交易类型
-        if(StringUtils.isEmpty(tranCode)||(!("T001".equals(tranType)||"T002".equals(tranType)))){
+        if(StringUtils.isEmpty(tranCode)||!"ACCOUNT_00001".equals(tranCode)||(!("T0001".equals(tranType)||"T0002".equals(tranType)))){
             logger.error("开户接口，交易码或交易类型错误！");
             res.setRespCode(AccountEnums.VALIDATE_ERROR.getRespCode());
             res.setRespMsg(AccountEnums.VALIDATE_ERROR.getRespMsg());
@@ -77,7 +77,7 @@ public class OpenAcctBoImpl implements OpenAcctBo {
         }
 
         //进入开户流程
-        if("T001".equals(req.getTranCode())){
+        if("T0001".equals(tranType)){
             OpenAcctTxnInfoDO openAcctTxnInfoDO = new OpenAcctTxnInfoDO();
             dbProcessor.insertModel(openAcctTxnInfoDO,req);
             logger.info("开户请求报文入库成功");
@@ -215,6 +215,14 @@ public class OpenAcctBoImpl implements OpenAcctBo {
             }
 
             AccountInfoDO accountInfoDO = accountInfoDOMapper.selectByPrimaryKey(eAccount);
+            if(accountInfoDO == null){
+                logger.error("查无此电子账号信息！流水号："+reqUid+"，电子账号："+eAccount);
+                res.setRespCode(AccountEnums.CHECK_NO_RESULT_ERROR.getRespCode());
+                res.setRespMsg(AccountEnums.CHECK_NO_RESULT_ERROR.getRespMsg());
+                accountSupplementTxnInfDo.setLastoperate("身份证一致性校验");
+                dbProcessor.updateModel(accountSupplementTxnInfDo,res);
+                return res;
+            }
 
             if(!idNo.equals(accountInfoDO.getIdno())){
                 logger.error("上传身份证号与原证件号不符");

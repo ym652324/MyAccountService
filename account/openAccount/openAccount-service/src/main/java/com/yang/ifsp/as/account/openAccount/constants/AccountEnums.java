@@ -17,6 +17,8 @@ public enum  AccountEnums {
 
     NOT_EQUAL_ERROR("10007","上送信息与原信息不符"),
 
+    CHECK_NO_RESULT_ERROR("10008","查无信息"),
+
     OPENACCT_SUCCESS("20001","开户成功"),
 
     ADD_INFO_SUCCESS("20002","补录成功"),
