@@ -37,10 +37,18 @@ public class DbProcessor {
         if(objs[0] instanceof OpenAcctTxnInfoDO){
             OpenAcctTxnInfoDO openAcctTxnInfoDO = (OpenAcctTxnInfoDO)objs[0];
             OpenAccountReq req = (OpenAccountReq)objs[1];
-            MakeCommon.makeOpenAcctInsertComm(openAcctTxnInfoDO,req);
-            openAcctTxnInfoDO.setAccounttype(req.getAccountType());
-            openAcctTxnInfoDO.setUsertype(req.getUserType());
-            return openAcctTxnInfoDOMapper.insertSelective(openAcctTxnInfoDO);
+            if("T0001".equals(req.getTranType())){
+                MakeCommon.makeOpenAcctInsertComm(openAcctTxnInfoDO,req);
+                openAcctTxnInfoDO.setAccounttype(req.getAccountType());
+                openAcctTxnInfoDO.setUsertype(req.getUserType());
+                return openAcctTxnInfoDOMapper.insertSelective(openAcctTxnInfoDO);
+            }else{
+                AccountSupplementTxnInfDo accountSupplementTxnInfDo = (AccountSupplementTxnInfDo) objs[0];
+                MakeCommon.makeOpenAcctInsertComm(accountSupplementTxnInfDo,req);
+                accountSupplementTxnInfDo.setDatasource("D01");
+                return accountSupplementTxnInfDoMapper.insertSelective(accountSupplementTxnInfDo);
+            }
+
         }
         if(objs[0] instanceof AccountInfoDO){
             AccountInfoDO accountInfoDO = (AccountInfoDO) objs[0];
@@ -59,13 +67,6 @@ public class DbProcessor {
             accountInfoDO.setPaypassword(openAccountReq.getPayPassword());
             return accountInfoDOMapper.insertSelective(accountInfoDO);
         }
-        if(objs[0] instanceof AccountSupplementTxnInfDo){
-            AccountSupplementTxnInfDo accountSupplementTxnInfDo = (AccountSupplementTxnInfDo) objs[0];
-            OpenAccountReq req = (OpenAccountReq)objs[1];
-            MakeCommon.makeOpenAcctInsertComm(accountSupplementTxnInfDo,req);
-            accountSupplementTxnInfDo.setDatasource("D01");
-            return accountSupplementTxnInfDoMapper.insertSelective(accountSupplementTxnInfDo);
-        }
 
         return 0;
     }
@@ -74,9 +75,16 @@ public class DbProcessor {
         if(obj instanceof OpenAcctTxnInfoDO){
             OpenAcctTxnInfoDO openAcctTxnInfoDO = (OpenAcctTxnInfoDO)obj;
             OpenAccountRes openAccountRes = (OpenAccountRes)srcObj;
-            MakeCommon.makeOpenAcctUpdateComm(openAcctTxnInfoDO,openAccountRes);
-            openAcctTxnInfoDO.setEaccount(openAccountRes.geteAccount());
-            openAcctTxnInfoDOMapper.updateByPrimaryKeySelective(openAcctTxnInfoDO);
+            if("T0001".equals(openAccountRes.getTranType())){
+                MakeCommon.makeOpenAcctUpdateComm(openAcctTxnInfoDO,openAccountRes);
+                openAcctTxnInfoDO.setEaccount(openAccountRes.geteAccount());
+                openAcctTxnInfoDOMapper.updateByPrimaryKeySelective(openAcctTxnInfoDO);
+            }else{
+                AccountSupplementTxnInfDo accountSupplementTxnInfDo = (AccountSupplementTxnInfDo) obj;
+                MakeCommon.makeOpenAcctUpdateComm(accountSupplementTxnInfDo,openAccountRes);
+                accountSupplementTxnInfDoMapper.updateByPrimaryKeySelective(accountSupplementTxnInfDo);
+            }
+
         }
         if(obj instanceof AccountInfoDO){
             AccountInfoDO accountInfoDO = (AccountInfoDO)obj;
@@ -84,11 +92,6 @@ public class DbProcessor {
             accountInfoDO.setPaypassword(openAccountReq.getPayPassword());
             accountInfoDOMapper.updateByPrimaryKeySelective(accountInfoDO);
         }
-        if(obj instanceof AccountSupplementTxnInfDo){
-            AccountSupplementTxnInfDo accountSupplementTxnInfDo = (AccountSupplementTxnInfDo) obj;
-            OpenAccountRes openAccountRes = (OpenAccountRes)srcObj;
-            MakeCommon.makeOpenAcctUpdateComm(accountSupplementTxnInfDo,openAccountRes);
-            accountSupplementTxnInfDoMapper.updateByPrimaryKeySelective(accountSupplementTxnInfDo);
-        }
+
     }
 }
