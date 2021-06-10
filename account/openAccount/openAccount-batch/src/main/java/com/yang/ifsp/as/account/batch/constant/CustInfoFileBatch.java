@@ -21,6 +21,8 @@ public class CustInfoFileBatch {
 
     private String mvCmds;
 
+    private String fileHeadKey;
+
     private String systemShell;
 //    private String sendPath;
 //    private String tempPath;
@@ -39,6 +41,8 @@ public class CustInfoFileBatch {
         this.mvCmds = "custMvCmds";
         this.systemShell = "systemShell";
         this.readLineNumKey = "readLineNumKey";
+        this.fileHeadKey = "fileHeadKey";
+
     }
 
     public String getBasePath() {
@@ -143,5 +147,13 @@ public class CustInfoFileBatch {
 
     public void setSystemShell(String systemShell) {
         this.systemShell = systemShell;
+    }
+
+    public String getFileHeadKey() {
+        return fileHeadKey;
+    }
+
+    public void setFileHeadKey(String fileHeadKey) {
+        this.fileHeadKey = fileHeadKey;
     }
 }

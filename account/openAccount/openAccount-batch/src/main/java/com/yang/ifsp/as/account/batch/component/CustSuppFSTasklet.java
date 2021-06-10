@@ -3,6 +3,7 @@ package com.yang.ifsp.as.account.batch.component;
 import com.yang.ifsp.as.account.batch.constant.CustInfoFileBatch;
 import com.yang.ifsp.as.account.batch.dao.BatchRecMapper;
 import com.yang.ifsp.as.account.batch.job.CustInfoRecBatchConfig;
+import com.yang.ifsp.as.account.batch.model.RecFileInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.StepContribution;
@@ -13,8 +14,11 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
+import org.springframework.util.FileCopyUtils;
 
 import java.io.File;
+import java.util.Date;
+import java.util.UUID;
 
 @Component
 @Qualifier(CustInfoRecBatchConfig.FSSTEPTASKLET)
@@ -50,11 +54,64 @@ public class CustSuppFSTasklet implements Tasklet {
         String fileName = names[0];
         logger.info("读取文件["+fileName+"]");
         File file = new File(custInfoFileBatch.getSourcePath()+fileName);
+        if(file.isDirectory()){
+            logger.info("发现文件夹，退出job");
+            file.delete();
+            return RepeatStatus.FINISHED;
+        }
+
+        chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext().put(custInfoFileBatch.getSourceFileNameKey(),fileName);
+        try{
+            FileCopyUtils.copy(file,new File(custInfoFileBatch.getSourceBakPath()+fileName));
+            logger.info("备份[{}]成功",fileName);
+        }catch (Exception e){
+            logger.error("复制文件出错！");
+        }
+
+        if(file.length() == 0){
+            logger.info("空文件[{}]，准备退出job",fileName);
+            return RepeatStatus.FINISHED;
+        }
+
+        if(!fileName.matches(custInfoFileBatch.getFileNamePattern())){
+            logger.info("文件命名不规范[{}]，准备退出job",fileName);
+            return RepeatStatus.FINISHED;
+        }
 
 
+        RecFileInfo recFileInfo = null;
+        try{
+            recFileInfo = batchRecMapper.selectRecFile(fileName);
+        }catch (Exception e){
+            logger.error("数据库查询异常");
+            return RepeatStatus.FINISHED;
+        }
+        if(recFileInfo != null){
+            logger.info("数据库文件名为：[{}]",recFileInfo.getFileName());
+            logger.info("文件已经被解析，检查上次解析结果");
+            if(recFileInfo.getStatus() == 2){
+                logger.info("上次解析成功，停止job");
+            }else{
+                logger.info("上次解析失败，停止job");
+            }
+            return RepeatStatus.FINISHED;
+        }else{
+            recFileInfo = new RecFileInfo();
+            recFileInfo.setfId(UUID.randomUUID().toString().replace("-",""));
+            recFileInfo.setFileName(fileName);
+            recFileInfo.setStatus(1);
+            try{
+                recFileInfo.setCreateTime(new Date());
+                batchRecMapper.insertReadFile(recFileInfo);
+            }catch (Exception e){
+                logger.error("插入文件信息到数据库失败");
+            }
+        }
 
+        String fileHead = fileName.split("_")[0];
+        chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext().put(custInfoFileBatch.getFileExistFlagKey(),true);
+        chunkContext.getStepContext().getStepExecution().getJobExecution().getExecutionContext().put(custInfoFileBatch.getFileHeadKey(),fileHead);
+        return RepeatStatus.FINISHED;
 
-
-        return null;
     }
 }

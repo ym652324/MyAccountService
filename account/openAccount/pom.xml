@@ -16,6 +16,14 @@
         <module>openAccount-api</module>
         <module>openAccount-batch</module>
     </modules>
+    <dependencies>
+        <dependency>
+            <groupId>com.yang.ifsp</groupId>
+            <artifactId>openAccount-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
 
 </project>
