@@ -15,6 +15,13 @@ public class CustInfoFileBatch {
     private String fileExistFlagKey;
     private String sourceFileNameKey;
     private String sendFileNameKey;
+
+    private String readLineNumKey;
+
+
+    private String mvCmds;
+
+    private String systemShell;
 //    private String sendPath;
 //    private String tempPath;
 //    private String fileNamePattern;
@@ -29,6 +36,9 @@ public class CustInfoFileBatch {
         this.sendPath = this.basePath+"custInfoFileBatch/send/";
         this.tempPath = this.basePath+"custInfoFileBatch";
         this.fileNamePattern = "^\\w+_[A-Z]{1}_000001_\\w+.csv$";
+        this.mvCmds = "custMvCmds";
+        this.systemShell = "systemShell";
+        this.readLineNumKey = "readLineNumKey";
     }
 
     public String getBasePath() {
@@ -109,5 +119,29 @@ public class CustInfoFileBatch {
 
     public void setSendFileNameKey(String sendFileNameKey) {
         this.sendFileNameKey = sendFileNameKey;
+    }
+
+    public String getReadLineNumKey() {
+        return readLineNumKey;
+    }
+
+    public void setReadLineNumKey(String readLineNumKey) {
+        this.readLineNumKey = readLineNumKey;
+    }
+
+    public String getMvCmds() {
+        return mvCmds;
+    }
+
+    public void setMvCmds(String mvCmds) {
+        this.mvCmds = mvCmds;
+    }
+
+    public String getSystemShell() {
+        return systemShell;
+    }
+
+    public void setSystemShell(String systemShell) {
+        this.systemShell = systemShell;
     }
 }

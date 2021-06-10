@@ -13,41 +13,41 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 
 @Component
+@Qualifier(CustInfoRecBatchConfig.SSSTEPLISTENER)
 @StepScope
-@Qualifier(CustInfoRecBatchConfig.FSSTEPLISTENER)
-public class CustSuppFSListener implements StepExecutionListener {
+public class CustSuppSSListener implements StepExecutionListener {
 
-    private static Logger logger = LoggerFactory.getLogger(CustSuppFSListener.class);
-
-    private ExecutionContext jobExecutionContext;
+    private static Logger logger = LoggerFactory.getLogger(CustSuppSSListener.class);
 
     @Autowired
     private CustInfoFileBatch custInfoFileBatch;
 
+    private ExecutionContext jobExecutionContext;
+
+    public ExecutionContext getJobExecutionContext(){
+        return jobExecutionContext;
+    }
+
+    public void setJobExecutionContext(ExecutionContext jobExecutionContext){
+        this.jobExecutionContext = jobExecutionContext;
+    }
+
+
+
     @Override
     public void beforeStep(StepExecution stepExecution) {
         jobExecutionContext = stepExecution.getJobExecution().getExecutionContext();
+        jobExecutionContext.put(custInfoFileBatch.getReadLineNumKey(),0);
+        logger.info("读取[{}]开始",jobExecutionContext.get(custInfoFileBatch.getSourceFileNameKey()));
+
     }
 
     @Override
     public ExitStatus afterStep(StepExecution stepExecution) {
-        String fileName = (String)jobExecutionContext.get(custInfoFileBatch.getSourceFileNameKey());
-        File file = new File(custInfoFileBatch.getSourcePath()+fileName);
-        if(file.exists()){
-            file.delete();
-            logger.info("删除源文件[{}]成功",fileName);
-        }
-        boolean existFlag = (boolean)jobExecutionContext.get(custInfoFileBatch.getFileExistFlagKey());
-        if(existFlag){
-            logger.info("文件获取成功，执行下一步");
-            return new ExitStatus(CustInfoRecBatchConfig.FSSTEPRESULTSUCESS);
-        }
-        else{
-            logger.info("文件获取失败，执行下一步");
-            return new ExitStatus(CustInfoRecBatchConfig.FSSTEPRESULTFAIL);
-        }
+        logger.info("读取[{}]结束",jobExecutionContext.get(custInfoFileBatch.getSourceFileNameKey()));
+
+        return ExitStatus.COMPLETED;
     }
 }
