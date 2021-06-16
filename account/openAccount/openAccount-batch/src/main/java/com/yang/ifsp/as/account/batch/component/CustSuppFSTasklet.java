@@ -1,9 +1,10 @@
 package com.yang.ifsp.as.account.batch.component;
 
 import com.yang.ifsp.as.account.batch.constant.CustInfoFileBatch;
-import com.yang.ifsp.as.account.batch.dao.BatchRecMapper;
+import com.yang.ifsp.as.account.batch.dao.CustInfoRecDOMapper;
+import com.yang.ifsp.as.account.batch.dao.RecFileNameDoMapper;
 import com.yang.ifsp.as.account.batch.job.CustInfoRecBatchConfig;
-import com.yang.ifsp.as.account.batch.model.RecFileInfo;
+import com.yang.ifsp.as.account.batch.model.RecFileNameDo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.StepContribution;
@@ -28,7 +29,10 @@ public class CustSuppFSTasklet implements Tasklet {
     private static Logger logger = LoggerFactory.getLogger(CustSuppFSTasklet.class);
 
     @Autowired
-    private BatchRecMapper batchRecMapper;
+    private CustInfoRecDOMapper custInfoRecDOMapper;
+
+    @Autowired
+    private RecFileNameDoMapper recFileNameDoMapper;
 
     @Autowired
     private CustInfoFileBatch custInfoFileBatch;
@@ -79,30 +83,31 @@ public class CustSuppFSTasklet implements Tasklet {
         }
 
 
-        RecFileInfo recFileInfo = null;
+
+        RecFileNameDo recFileNameDo = null;
         try{
-            recFileInfo = batchRecMapper.selectRecFile(fileName);
+            recFileNameDo = recFileNameDoMapper.selectByFileName(fileName);
         }catch (Exception e){
             logger.error("数据库查询异常");
             return RepeatStatus.FINISHED;
         }
-        if(recFileInfo != null){
-            logger.info("数据库文件名为：[{}]",recFileInfo.getFileName());
+        if(recFileNameDo != null){
+            logger.info("数据库文件名为：[{}]",recFileNameDo.getFilename());
             logger.info("文件已经被解析，检查上次解析结果");
-            if(recFileInfo.getStatus() == 2){
+            if(recFileNameDo.getStatus() == 2){
                 logger.info("上次解析成功，停止job");
             }else{
                 logger.info("上次解析失败，停止job");
             }
             return RepeatStatus.FINISHED;
         }else{
-            recFileInfo = new RecFileInfo();
-            recFileInfo.setfId(UUID.randomUUID().toString().replace("-",""));
-            recFileInfo.setFileName(fileName);
-            recFileInfo.setStatus(1);
+            recFileNameDo = new RecFileNameDo();
+            recFileNameDo.setId(UUID.randomUUID().toString().replace("-",""));
+            recFileNameDo.setFilename(fileName);
+            recFileNameDo.setStatus(1);
             try{
-                recFileInfo.setCreateTime(new Date());
-                batchRecMapper.insertReadFile(recFileInfo);
+                recFileNameDo.setCreatetime(new Date());
+                recFileNameDoMapper.insertSelective(recFileNameDo);
             }catch (Exception e){
                 logger.error("插入文件信息到数据库失败");
             }

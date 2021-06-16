@@ -13,7 +13,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>openAccount</module>
-        <module>openAccount-batch</module>
     </modules>
 
 

@@ -2,7 +2,8 @@ package com.yang.ifsp.as.account.batch.job;
 
 import com.yang.ifsp.as.account.batch.component.*;
 import com.yang.ifsp.as.account.batch.constant.CustInfoFileBatch;
-import com.yang.ifsp.as.account.batch.model.CustInfoRecModel;
+
+import com.yang.ifsp.as.account.batch.model.CustInfoRecDO;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.batch.MyBatisCursorItemReader;
 import org.slf4j.Logger;
@@ -152,9 +153,9 @@ public class CustInfoRecBatchConfig {
     //读取源文件
     @Bean(name = SSREADER)
     @StepScope
-    public FlatFileItemReader<CustInfoRecModel> getItemReader(){
+    public FlatFileItemReader<CustInfoRecDO> getItemReader(){
         String fileName = (String) custSuppSSListener.getJobExecutionContext().get(custInfoFileBatch.getSourceFileNameKey());
-        FlatFileItemReader<CustInfoRecModel> flatFileItemReader = new FlatFileItemReader<>();
+        FlatFileItemReader<CustInfoRecDO> flatFileItemReader = new FlatFileItemReader<>();
         FileSystemResource fr = new FileSystemResource(custInfoFileBatch.getSourceBakPath()+fileName);
         logger.info("读取文件路径是"+fileName);
         flatFileItemReader.setEncoding("UTF-8");

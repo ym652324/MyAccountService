@@ -2,7 +2,8 @@ package com.yang.ifsp.as.account.batch.component;
 
 
 import com.yang.ifsp.as.account.batch.constant.CustInfoFileBatch;
-import com.yang.ifsp.as.account.batch.dao.BatchRecMapper;
+import com.yang.ifsp.as.account.batch.dao.RecFileNameDoMapper;
+import com.yang.ifsp.as.account.batch.model.RecFileNameDo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.ExitStatus;
@@ -25,7 +26,7 @@ public class CustSuppTSListener implements StepExecutionListener {
     private static Logger logger = LoggerFactory.getLogger(CustSuppTSListener.class);
 
     @Autowired
-    private BatchRecMapper batchRecMapper;
+    private RecFileNameDoMapper recFileNameDoMapper;
 
     @Autowired
     private CustInfoFileBatch custInfoFileBatch;
@@ -88,7 +89,11 @@ public class CustSuppTSListener implements StepExecutionListener {
         }
 
         try{
-            batchRecMapper.updateReadFile(new Date(),recFileName,2);
+            RecFileNameDo recFileNameDo = new RecFileNameDo();
+            recFileNameDo.setCreatetime(new Date());
+            recFileNameDo.setFilename(recFileName);
+            recFileNameDo.setStatus(2);
+            recFileNameDoMapper.updateByFileNameSelective(recFileNameDo);
             logger.info("新文件写入成功修改文件状态");
         }catch (Exception e){
             logger.error("更新文件状态至数据库异常");

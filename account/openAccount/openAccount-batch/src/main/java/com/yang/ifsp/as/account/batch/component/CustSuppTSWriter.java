@@ -3,7 +3,7 @@ package com.yang.ifsp.as.account.batch.component;
 
 import com.yang.ifsp.as.account.batch.constant.CustInfoFileBatch;
 import com.yang.ifsp.as.account.batch.job.CustInfoRecBatchConfig;
-import com.yang.ifsp.as.account.batch.model.CustInfoRecModel;
+import com.yang.ifsp.as.account.batch.model.CustInfoRecDO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.ItemWriter;
@@ -19,7 +19,7 @@ import java.util.List;
 
 @Component
 @Qualifier(CustInfoRecBatchConfig.TSWRITER)
-public class CustSuppTSWriter implements ItemWriter<CustInfoRecModel> {
+public class CustSuppTSWriter implements ItemWriter<CustInfoRecDO> {
 
     private static Logger logger = LoggerFactory.getLogger(CustSuppTSWriter.class);
 
@@ -30,29 +30,29 @@ public class CustSuppTSWriter implements ItemWriter<CustInfoRecModel> {
     private CustInfoFileBatch custInfoFileBatch;
 
     @Override
-    public void write(List<? extends CustInfoRecModel> list) throws Exception {
+    public void write(List<? extends CustInfoRecDO> list) throws Exception {
         String recFileName = (String)custSuppTSListener.getJobExecutionContext().get(custInfoFileBatch.getSendFileNameKey());
         Writer writer = new BufferedWriter(new OutputStreamWriter(
                 new FileOutputStream(custInfoFileBatch.getSendBakPath()+recFileName,true),"GBK"
         ));
 
         for(int i=0;i<=list.size()-1;i++){
-            String error = list.get(i).getErrorData();
+            String error = list.get(i).getErrordata();
             if(!"".equals(error)){
-                writer.write(list.get(i).getErrorData()+",");
-                writer.write(list.get(i).getRespCode()+",");
-                writer.write(list.get(i).getRespMsg()+"");
+                writer.write(list.get(i).getErrordata()+",");
+                writer.write(list.get(i).getRespcode()+",");
+                writer.write(list.get(i).getRespmsg()+"");
                 writer.write("\n");
             }else{
-                writer.write(list.get(i).getReqUid()+",");
-                writer.write(list.get(i).getCustName()+",");
-                writer.write(list.get(i).getMobilePhone()+",");
-                writer.write(list.get(i).getBindCard()+",");
-                writer.write(list.get(i).getIdNo()+",");
+                writer.write(list.get(i).getFid()+",");
+                writer.write(list.get(i).getCustname()+",");
+                writer.write(list.get(i).getMobilephone()+",");
+                writer.write(list.get(i).getBindcard()+",");
+                writer.write(list.get(i).getIdno()+",");
                 writer.write(list.get(i).getImage()+",");
-                writer.write(list.get(i).geteAccount()+",");
-                writer.write(list.get(i).getRespCode()+",");
-                writer.write(list.get(i).getRespMsg()+"");
+                writer.write(list.get(i).getEaccount()+",");
+                writer.write(list.get(i).getRespcode()+",");
+                writer.write(list.get(i).getRespmsg()+"");
                 writer.write("\n");
             }
         }

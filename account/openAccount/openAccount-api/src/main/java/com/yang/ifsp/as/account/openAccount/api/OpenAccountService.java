@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
+
 @Api(value = "OpenAccountService",tags = "开户服务")
 public interface OpenAccountService {
     @PostMapping(path = "/openAccount-service/doOpenAccount")

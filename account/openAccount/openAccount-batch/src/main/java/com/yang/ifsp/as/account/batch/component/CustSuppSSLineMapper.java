@@ -2,7 +2,7 @@ package com.yang.ifsp.as.account.batch.component;
 
 import com.yang.ifsp.as.account.batch.constant.CustInfoFileBatch;
 import com.yang.ifsp.as.account.batch.job.CustInfoRecBatchConfig;
-import com.yang.ifsp.as.account.batch.model.CustInfoRecModel;
+import com.yang.ifsp.as.account.batch.model.CustInfoRecDO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -30,14 +30,14 @@ public class CustSuppSSLineMapper implements LineMapper {
 
 
     @Override
-    public CustInfoRecModel mapLine(String s, int i) throws Exception {
+    public CustInfoRecDO mapLine(String s, int i) throws Exception {
         int lineNum = (int)custSuppSSListener.getJobExecutionContext().get(custInfoFileBatch.getReadLineNumKey());
         lineNum++;
         logger.info("当前读取第[{}]行",lineNum);
         custSuppSSListener.getJobExecutionContext().put(custInfoFileBatch.getReadLineNumKey(),lineNum);
         String fileName = (String)custSuppSSListener.getJobExecutionContext().get(custInfoFileBatch.getReadLineNumKey());
-        CustInfoRecModel custInfoRecModel = new CustInfoRecModel();
-        custInfoRecModel.setFileName(fileName);
+        CustInfoRecDO custInfoRecDO = new CustInfoRecDO();
+        custInfoRecDO.setFilename(fileName);
         if(lineNum==1){
             if(s.startsWith("\uFEFF"));{
                 s=s.replace("/uFEFF","");
@@ -48,15 +48,15 @@ public class CustSuppSSLineMapper implements LineMapper {
         Integer length = lineArray.length;
         if(length!=7){
             String rid = lineArray[0].trim();
-            custInfoRecModel.setReqUid(rid);
+            custInfoRecDO.setFid(rid);
             if(rid.equals("")){
                 String uuid = UUID.randomUUID().toString().replace("-","");
-                custInfoRecModel.setReqUid(uuid);
+                custInfoRecDO.setFid(uuid);
             }
-            custInfoRecModel.setErrorData(s);
-            custInfoRecModel.setRespCode("[S91_1998]");
-            custInfoRecModel.setRespMsg("[交易失败，数据格式不正确]");
-            return custInfoRecModel;
+            custInfoRecDO.setErrordata(s);
+            custInfoRecDO.setRespcode("[S91_1998]");
+            custInfoRecDO.setRespmsg("[交易失败，数据格式不正确]");
+            return custInfoRecDO;
         }
 
         String rid = lineArray[0].trim();
@@ -67,35 +67,35 @@ public class CustSuppSSLineMapper implements LineMapper {
         String image = lineArray[5].trim();
         String eAccount = lineArray[6].trim();
 
-        custInfoRecModel.setReqUid(rid);
-        custInfoRecModel.setCustName(custName);
-        custInfoRecModel.setMobilePhone(mobile);
-        custInfoRecModel.setBindCard(bindCard);
-        custInfoRecModel.setIdNo(idNo);
-        custInfoRecModel.setImage(image.getBytes());
-        custInfoRecModel.seteAccount(eAccount);
-        custInfoRecModel.setErrorData("");
+        custInfoRecDO.setFid(rid);
+        custInfoRecDO.setCustname(custName);
+        custInfoRecDO.setMobilephone(mobile);
+        custInfoRecDO.setBindcard(bindCard);
+        custInfoRecDO.setIdno(idNo);
+        custInfoRecDO.setImage(image.getBytes());
+        custInfoRecDO.setEaccount(eAccount);
+        custInfoRecDO.setErrordata("");
 
         if("".equals(rid)||"".equals(eAccount)||"".equals(idNo)){
             if("".equals(rid)){
                 String uuid = UUID.randomUUID().toString().replace("-","");
-                custInfoRecModel.setReqUid(uuid);
+                custInfoRecDO.setFid(uuid);
             }
-            custInfoRecModel.setErrorData(s);
-            custInfoRecModel.setRespCode("[S91_1998]");
-            custInfoRecModel.setRespMsg("[交易失败，缺少必输字段]");
-            return custInfoRecModel;
+            custInfoRecDO.setErrordata(s);
+            custInfoRecDO.setRespcode("[S91_1998]");
+            custInfoRecDO.setRespmsg("[交易失败，缺少必输字段]");
+            return custInfoRecDO;
         }
 
         if("".equals(custName)&&"".equals(mobile)&&"".equals(bindCard)&&"".equals(image)){
-            custInfoRecModel.setErrorData(s);
-            custInfoRecModel.setRespCode("[S91_1998]");
-            custInfoRecModel.setRespMsg("[交易失败，缺少补录字段]");
-            return custInfoRecModel;
+            custInfoRecDO.setErrordata(s);
+            custInfoRecDO.setRespcode("[S91_1998]");
+            custInfoRecDO.setRespmsg("[交易失败，缺少补录字段]");
+            return custInfoRecDO;
         }
 
 
 
-        return custInfoRecModel;
+        return custInfoRecDO;
     }
 }
