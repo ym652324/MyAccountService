@@ -10,10 +10,7 @@
     </option>
     <option name="ignoredFiles">
       <set>
-        <option value="$PROJECT_DIR$/account/openAccount/openAccount-batch/pom.xml" />
         <option value="$PROJECT_DIR$/account/pom.xml" />
-        <option value="$PROJECT_DIR$/channel/pom.xml" />
-        <option value="$PROJECT_DIR$/ocr/pom.xml" />
       </set>
     </option>
   </component>

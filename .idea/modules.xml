@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/account/account.iml" filepath="$PROJECT_DIR$/account/account.iml" />
-      <module fileurl="file://$PROJECT_DIR$/account/openAccount/openAccount-batch/openAccount-batch.iml" filepath="$PROJECT_DIR$/account/openAccount/openAccount-batch/openAccount-batch.iml" />
     </modules>
   </component>
 </project>

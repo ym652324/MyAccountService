@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 
-@Service
+@Service("CustInfoRecService")
 public class CustInfoRecService {
     private static Logger logger = LoggerFactory.getLogger(CustInfoRecService.class);
 

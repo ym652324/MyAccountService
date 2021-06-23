@@ -17,7 +17,6 @@
       <module name="accountService" target="1.8" />
       <module name="channel" target="1.8" />
       <module name="ocr" target="1.8" />
-      <module name="openAccount-batch" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
