@@ -101,6 +101,7 @@ public class CustSuppFSTasklet implements Tasklet {
             }
             return RepeatStatus.FINISHED;
         }else{
+            logger.info("+++++++++null+++++++++");
             recFileNameDo = new RecFileNameDo();
             recFileNameDo.setId(UUID.randomUUID().toString().replace("-",""));
             recFileNameDo.setFilename(fileName);
