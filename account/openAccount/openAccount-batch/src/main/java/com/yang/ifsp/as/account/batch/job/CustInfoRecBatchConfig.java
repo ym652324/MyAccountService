@@ -101,7 +101,7 @@ public class CustInfoRecBatchConfig {
                 .listener(custSuppJobListener)
                 .start(getFileCheckStep)
                 .on(FSSTEPRESULTFAIL).end()
-                .from(getFileCheckStep).on(FSSTEPRESULTFAIL).to(saveToDbStep)
+                .from(getFileCheckStep).on(FSSTEPRESULTSUCESS).to(saveToDbStep)
                 .next(selectFromDbStep)
                 .end()
                 .build();

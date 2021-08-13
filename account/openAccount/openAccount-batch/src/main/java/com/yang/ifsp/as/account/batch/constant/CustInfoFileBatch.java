@@ -31,17 +31,18 @@ public class CustInfoFileBatch {
 
 
     public CustInfoFileBatch(AccountBatchConfig accountBatchConfig) {
-        this.basePath = accountBatchConfig.getBasePath();
+        this.basePath = "/Users/yangmeng/Desktop/test/";
         this.sourcePath = this.basePath+"custInfoFileBatch/recv/";
         this.sourceBakPath = this.basePath+"custInfoFileBatch/recvBak/";
         this.sendBakPath = this.basePath+"custInfoFileBatch/sendBak/";
         this.sendPath = this.basePath+"custInfoFileBatch/send/";
         this.tempPath = this.basePath+"custInfoFileBatch";
-        this.fileNamePattern = "^\\w+_[A-Z]{1}_000001_\\w+.csv$";
+        this.fileNamePattern = "^\\w+_[A-Z]{1}_000001_\\w+.txt$";
         this.mvCmds = "custMvCmds";
         this.systemShell = "systemShell";
         this.readLineNumKey = "readLineNumKey";
         this.fileHeadKey = "fileHeadKey";
+        this.fileExistFlagKey = "fileExitFlagKey";
 
     }
 
