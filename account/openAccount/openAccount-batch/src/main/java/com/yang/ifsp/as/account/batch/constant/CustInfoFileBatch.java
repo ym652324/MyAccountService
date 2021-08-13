@@ -43,6 +43,7 @@ public class CustInfoFileBatch {
         this.readLineNumKey = "readLineNumKey";
         this.fileHeadKey = "fileHeadKey";
         this.fileExistFlagKey = "fileExitFlagKey";
+        this.sourceFileNameKey = "sourceFileNameKey";
 
     }
 
